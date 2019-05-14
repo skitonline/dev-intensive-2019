@@ -1,7 +1,7 @@
 package net.thumbtack.school.misc.v2;
 
-import net.thumbtack.school.figures.v2.Point;
-import net.thumbtack.school.misc.v2.Segment;
+import net.thumbtack.school.figures.v3.Point;
+import net.thumbtack.school.misc.v3.Segment;
 import org.junit.Test;
 
 import org.junit.Assert;
