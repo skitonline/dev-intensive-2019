@@ -1,8 +1,10 @@
-package net.thumbtack.school.figures.v1;
+package net.thumbtack.school.figures.v2;
+
+import net.thumbtack.school.iface.v2.Colored;
 
 import java.util.Objects;
 
-public class ColoredCircle extends Circle{
+public class ColoredCircle extends Circle implements Colored {
     public int getColor() {
         return color;
     }

@@ -1,8 +1,8 @@
-package net.thumbtack.school.figures.v1;
-
-import static org.junit.Assert.*;
+package net.thumbtack.school.figures.v2;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class TestColoredCircle {
 
@@ -38,7 +38,7 @@ public class TestColoredCircle {
 
     @Test
     public void testColoredCircle4() {
-        ColoredCircle coloredCircle = new ColoredCircle();
+        ColoredCircle coloredCircle = new ColoredCircle(1);
         assertEquals(0, coloredCircle.getCenter().getX());
         assertEquals(0, coloredCircle.getCenter().getY());
         assertEquals(1, coloredCircle.getRadius());
@@ -57,7 +57,7 @@ public class TestColoredCircle {
 
     @Test
     public void testSetColor() {
-        ColoredCircle coloredCircle = new ColoredCircle();
+        ColoredCircle coloredCircle = new ColoredCircle(1);
         assertEquals(0, coloredCircle.getCenter().getX());
         assertEquals(0, coloredCircle.getCenter().getY());
         assertEquals(1, coloredCircle.getRadius());

@@ -1,8 +1,8 @@
-package net.thumbtack.school.figures.v1;
-
-import static org.junit.Assert.*;
+package net.thumbtack.school.figures.v2;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class TestColoredRectangle {
 
@@ -49,7 +49,7 @@ public class TestColoredRectangle {
 
     @Test
     public void testColoredRectangle4() {
-        ColoredRectangle coloredRectangle = new ColoredRectangle();
+        ColoredRectangle coloredRectangle = new ColoredRectangle(1);
         assertEquals(0, coloredRectangle.getTopLeft().getX());
         assertEquals(-1, coloredRectangle.getTopLeft().getY());
         assertEquals(1, coloredRectangle.getBottomRight().getX());
@@ -61,7 +61,7 @@ public class TestColoredRectangle {
 
     @Test
     public void testSetColor() {
-        ColoredRectangle coloredRectangle = new ColoredRectangle();
+        ColoredRectangle coloredRectangle = new ColoredRectangle(1);
         assertEquals(0, coloredRectangle.getTopLeft().getX());
         assertEquals(-1, coloredRectangle.getTopLeft().getY());
         assertEquals(1, coloredRectangle.getBottomRight().getX());

@@ -1,8 +1,10 @@
-package net.thumbtack.school.figures.v1;
+package net.thumbtack.school.figures.v2;
+
+import net.thumbtack.school.figures.v2.iface.Stretchable;
 
 import java.util.Objects;
 
-public class Ellipse {
+public class Ellipse extends Figure implements Stretchable {
     public void setCenter(Point center) {
         this.center = center;
     }
@@ -52,9 +54,6 @@ public class Ellipse {
         center.setX(x);
         center.setY(y);
     }
-    public void moveTo(Point point){
-        moveTo(point.getX(), point.getY());
-    }
     public void moveRel(int dx, int dy){
         center.moveRel(dx, dy);
     }
@@ -78,9 +77,6 @@ public class Ellipse {
         double k1 = (x - center.getX()) * (x - center.getX()) / (xAxis * xAxis / 4.0);
         double k2 = (y - center.getY()) * (y - center.getY()) / (yAxis * yAxis / 4.0);
         return k1 + k2 <= 1.0;
-    }
-    public boolean isInside(Point point){
-        return isInside(point.getX(), point.getY());
     }
 
     @Override

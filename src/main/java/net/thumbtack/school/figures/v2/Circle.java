@@ -1,8 +1,8 @@
-package net.thumbtack.school.figures.v1;
+package net.thumbtack.school.figures.v2;
 
 import java.util.Objects;
 
-public class Circle {
+public class Circle extends Figure{
     public Point getCenter() {
         return center;
     }
@@ -39,9 +39,6 @@ public class Circle {
     public void moveTo(int x, int y){
         center.moveTo(x, y);
     }
-    public void moveTo(Point point){
-        moveTo(point.getX(), point.getY());
-    }
     public void moveRel(int dx, int dy){
         center.moveRel(dx, dy);
     }
@@ -60,9 +57,6 @@ public class Circle {
     public boolean isInside(int x, int y){
         return  Math.sqrt((center.getX() - x) * (center.getX() - x)
                 + (center.getY() - y) * (center.getY() - y)) <= radius;
-    }
-    public boolean isInside(Point point){
-        return isInside(point.getX(), point.getY());
     }
 
     @Override

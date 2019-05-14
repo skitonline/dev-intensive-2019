@@ -1,8 +1,10 @@
-package net.thumbtack.school.figures.v1;
+package net.thumbtack.school.figures.v2;
+
+import net.thumbtack.school.figures.v2.iface.Stretchable;
 
 import java.util.Objects;
 
-public class Rectangle {
+public class Rectangle extends Figure implements Stretchable{
     private Point topLeft, bottomRight;
 
     public Rectangle(Point leftTop, Point rightBottom){
@@ -47,9 +49,6 @@ public class Rectangle {
         bottomRight.moveTo(x + getLength(), y + getWidth());
         topLeft.moveTo(x, y);
     }
-    public void moveTo(Point point){
-        moveTo(point.getX(), point.getY());
-    }
     public void moveRel(int dx, int dy){
         topLeft.moveRel(dx, dy);
         bottomRight.moveRel(dx, dy);
@@ -74,9 +73,6 @@ public class Rectangle {
     public boolean isInside(int x, int y){
         return topLeft.getX() <= x && x <= bottomRight.getX()
                 && topLeft.getY() <= y && y <= bottomRight.getY();
-    }
-    public boolean isInside(Point point){
-        return isInside(point.getX(), point.getY());
     }
     public boolean isIntersects(Rectangle rectangle){
         return isInside(rectangle.topLeft) || isInside(rectangle.bottomRight)

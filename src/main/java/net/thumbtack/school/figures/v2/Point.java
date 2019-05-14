@@ -1,6 +1,8 @@
-package net.thumbtack.school.figures.v1;
+package net.thumbtack.school.figures.v2;
 
-public class Point {
+import net.thumbtack.school.iface.v2.Movable;
+
+public class Point implements Movable {
 
     private int x, y;
 
