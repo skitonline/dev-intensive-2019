@@ -5,6 +5,7 @@ import net.thumbtack.school.colors.v3.ColorErrorCode;
 import net.thumbtack.school.colors.v3.ColorException;
 import net.thumbtack.school.iface.v3.Colored;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class ColoredRectangle extends Rectangle implements Colored {

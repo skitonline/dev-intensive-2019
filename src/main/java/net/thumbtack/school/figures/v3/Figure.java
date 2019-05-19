@@ -4,6 +4,8 @@ import net.thumbtack.school.iface.v3.HasArea;
 import net.thumbtack.school.iface.v3.Movable;
 import net.thumbtack.school.iface.v3.Resizable;
 
+import java.io.Serializable;
+
 public abstract class Figure implements HasArea, Movable, Resizable {
     abstract public boolean isInside(int x, int y);
     public boolean isInside(Point point) {

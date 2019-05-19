@@ -1,8 +1,9 @@
 package net.thumbtack.school.ttschool;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Trainee {
+public class Trainee implements Serializable {
     public Trainee(String firstName, String lastName, int rating) throws TrainingException{
         setFirstName(firstName);
         setLastName(lastName);
@@ -60,5 +61,10 @@ public class Trainee {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, rating);
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " " + rating;
     }
 }

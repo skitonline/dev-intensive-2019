@@ -2,9 +2,10 @@ package net.thumbtack.school.figures.v3;
 
 import net.thumbtack.school.iface.v3.Stretchable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Rectangle extends Figure implements Stretchable{
+public class Rectangle extends Figure implements Stretchable {
     private Point topLeft, bottomRight;
 
     public Rectangle(Point leftTop, Point rightBottom){
@@ -100,5 +101,11 @@ public class Rectangle extends Figure implements Stretchable{
     @Override
     public int hashCode() {
         return Objects.hash(topLeft, bottomRight);
+    }
+
+    @Override
+    public String toString() {
+        return topLeft.getX() + " " + topLeft.getY() + " " +
+                bottomRight.getX() + " " + bottomRight.getY();
     }
 }
