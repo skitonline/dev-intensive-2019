@@ -1,4 +1,4 @@
-package net.thumbtack.school.matrix;
+package net.thumbtack.school.file.matrix;
 
 import org.junit.Test;
 
