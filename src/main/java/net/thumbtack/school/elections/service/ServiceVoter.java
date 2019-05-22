@@ -10,12 +10,15 @@ public class ServiceVoter {
 
     public String registerVoter(String requestJsonString){
         Gson gson = new Gson();
-        RegisterVoterDtoRequest registerVoterDtoReques =
+        RegisterVoterDtoRequest registerVoterDtoRequest =
                 gson.fromJson(requestJsonString, RegisterVoterDtoRequest.class);
-        if (!registerVoterDtoReques.validation())
+        if (!registerVoterDtoRequest.validation())
             return "error";
-        RegisterVoterDtoResponse registerVoterDtoResponse = new RegisterVoterDtoResponse();
-        voterDao.insert(registerVoterDtoResponse);
+        RegisterVoterDtoResponse registerVoterDtoResponse =
+                gson.fromJson(requestJsonString, RegisterVoterDtoResponse.class);
+        if (!voterDao.insert(registerVoterDtoResponse))
+            return "error";
+        registerVoterDtoResponse.generateToken();
         return registerVoterDtoResponse.getToken().toString();
     }
 }

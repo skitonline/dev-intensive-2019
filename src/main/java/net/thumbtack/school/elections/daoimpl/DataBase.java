@@ -20,7 +20,15 @@ public class DataBase {
         return voters;
     }
 
-    static public void insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
+    static public boolean insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
+        boolean insert = true;
+        for (RegisterVoterDtoResponse voter : voters) {
+            if (registerVoterDtoResponse.equals(voter) ||
+                registerVoterDtoResponse.getLogin().equals(voter.getLogin())) {
+                return false;
+            }
+        }
         voters.add(registerVoterDtoResponse);
+        return insert;
     }
 }

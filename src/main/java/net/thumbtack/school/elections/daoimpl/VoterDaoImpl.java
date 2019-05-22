@@ -6,7 +6,7 @@ import net.thumbtack.school.elections.server.Server;
 
 public class VoterDaoImpl implements VoterDao {
     @Override
-    public void insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
-        Server.dataBase.insert(registerVoterDtoResponse);
+    public boolean insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
+        return Server.dataBase.insert(registerVoterDtoResponse);
     }
 }
