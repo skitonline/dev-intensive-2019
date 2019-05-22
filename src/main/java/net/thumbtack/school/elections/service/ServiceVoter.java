@@ -18,7 +18,7 @@ public class ServiceVoter {
                 gson.fromJson(requestJsonString, RegisterVoterDtoResponse.class);
         if (!voterDao.insert(registerVoterDtoResponse))
             return "error";
-        registerVoterDtoResponse.generateToken();
-        return registerVoterDtoResponse.getToken().toString();
+        registerVoterDtoResponse.activated();
+        return gson.toJson(registerVoterDtoResponse, RegisterVoterDtoResponse.class);
     }
 }

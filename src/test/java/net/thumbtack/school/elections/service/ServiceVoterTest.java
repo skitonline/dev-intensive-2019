@@ -1,6 +1,7 @@
 package net.thumbtack.school.elections.service;
 
 import com.google.gson.Gson;
+import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
@@ -20,7 +21,8 @@ public class ServiceVoterTest {
         String stringVoter1 = gson.toJson(voter1);
         String rigister1 = server.registerVoter(stringVoter1);
         assertEquals(1, Server.dataBase.getVoters().size());
-        assertEquals(rigister1, Server.dataBase.getVoters().get(0).getToken().toString());
+        assertEquals(rigister1,
+                gson.toJson(Server.dataBase.getVoters().get(0), RegisterVoterDtoResponse.class));
         //Нет фамилии
         Voter voter2 = new Voter("Alexander", "", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -36,7 +38,8 @@ public class ServiceVoterTest {
         String stringVoter3 = gson.toJson(voter3);
         String rigister3 = server.registerVoter(stringVoter3);
         assertEquals(2, Server.dataBase.getVoters().size());
-        assertEquals(rigister3, Server.dataBase.getVoters().get(1).getToken().toString());
+        assertEquals(rigister3,
+                gson.toJson(Server.dataBase.getVoters().get(1), RegisterVoterDtoResponse.class));
         //Нет отчества, это допустимо
         Voter voter4 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -44,7 +47,8 @@ public class ServiceVoterTest {
         String stringVoter4 = gson.toJson(voter4);
         String rigister4 = server.registerVoter(stringVoter4);
         assertEquals(3, Server.dataBase.getVoters().size());
-        assertEquals(rigister4, Server.dataBase.getVoters().get(2).getToken().toString());
+        assertEquals(rigister4,
+                gson.toJson(Server.dataBase.getVoters().get(2), RegisterVoterDtoResponse.class));
         //Нет номера дома
         Voter voter5 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", null, "10",

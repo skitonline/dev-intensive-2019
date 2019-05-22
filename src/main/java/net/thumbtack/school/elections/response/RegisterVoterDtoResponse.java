@@ -8,10 +8,7 @@ public class RegisterVoterDtoResponse {
     private String street, number, room;
     private String login, password;
     private UUID token;
-
-    public void generateToken(){
-        token = UUID.randomUUID();
-    }
+    private boolean active;
 
     public RegisterVoterDtoResponse(String name, String surname, String patronymic,
                                    String street, String number, String room,
@@ -32,6 +29,19 @@ public class RegisterVoterDtoResponse {
 
     public UUID getToken() {
         return token;
+    }
+
+    public void activated(){
+        token = UUID.randomUUID();
+        active = true;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive() {
+        active = !active;
     }
 
     @Override
