@@ -1,33 +1,23 @@
 package net.thumbtack.school.elections.roles;
 
-import net.thumbtack.school.elections.exception.ActionError;
-import net.thumbtack.school.elections.roles.validation.VoterValidation;
-
 public class Voter {
     private String name, surname, patronymic;
-    private String street, number, roomn;
+    private String street, number, room;
     private String login, password;
     private boolean active;
 
     public Voter(String name, String surname, String patronymic,
-                 String street, String number, String roomn,
+                 String street, String number, String room,
                  String login, String password) {
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.street = street;
         this.number = number;
-        this.roomn = roomn;
+        this.room = room;
         this.login = login;
         this.password = password;
         active = true;
-        boolean validation = new VoterValidation(this).validation();
-        if (!validation)
-            try {
-                throw new ActionError();
-            } catch (ActionError actionError) {
-                actionError.printStackTrace();
-            }
     }
 
     public String getName() {
@@ -50,8 +40,8 @@ public class Voter {
         return number;
     }
 
-    public String getRoomn() {
-        return roomn;
+    public String getRoom() {
+        return room;
     }
 
     public String getLogin() {
@@ -60,5 +50,13 @@ public class Voter {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
