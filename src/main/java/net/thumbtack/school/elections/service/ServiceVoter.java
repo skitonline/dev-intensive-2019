@@ -16,6 +16,6 @@ public class ServiceVoter {
             return "error";
         RegisterVoterDtoResponse registerVoterDtoResponse = new RegisterVoterDtoResponse();
         voterDao.insert(registerVoterDtoResponse);
-        return registerVoterDtoResponse.toString();
+        return registerVoterDtoResponse.getToken().toString();
     }
 }

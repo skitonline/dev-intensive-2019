@@ -9,10 +9,6 @@ public class Server {
     static public DataBase dataBase = DataBase.getInstance();
     private ServiceVoter serviceVoter = new ServiceVoter();
 
-    public static DataBase getDataBase() {
-        return dataBase;
-    }
-
     public String registerVoter(String requestJsonString){
         return serviceVoter.registerVoter(requestJsonString);
     }

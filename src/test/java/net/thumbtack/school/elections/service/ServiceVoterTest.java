@@ -20,6 +20,7 @@ public class ServiceVoterTest {
         String stringVoter1 = gson.toJson(voter1);
         String rigister1 = server.registerVoter(stringVoter1);
         assertEquals(1, Server.dataBase.getVoters().size());
+        assertEquals(rigister1, Server.dataBase.getVoters().get(0).getToken().toString());
         //Нет фамилии
         Voter voter2 = new Voter("Alexander", "", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -35,6 +36,7 @@ public class ServiceVoterTest {
         String stringVoter3 = gson.toJson(voter3);
         String rigister3 = server.registerVoter(stringVoter3);
         assertEquals(2, Server.dataBase.getVoters().size());
+        assertEquals(rigister3, Server.dataBase.getVoters().get(1).getToken().toString());
         //Нет отчества, это допустимо
         Voter voter4 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -42,6 +44,7 @@ public class ServiceVoterTest {
         String stringVoter4 = gson.toJson(voter4);
         String rigister4 = server.registerVoter(stringVoter4);
         assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(rigister4, Server.dataBase.getVoters().get(2).getToken().toString());
         //Нет номера дома
         Voter voter5 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", null, "10",

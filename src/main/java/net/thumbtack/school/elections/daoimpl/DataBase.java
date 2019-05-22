@@ -14,13 +14,13 @@ public class DataBase {
 
     private DataBase(){}
 
-    static private List<String> voters = new ArrayList<>();
+    static private List<RegisterVoterDtoResponse> voters = new ArrayList<>();
 
-    static public List<String> getVoters() {
+    static public List<RegisterVoterDtoResponse> getVoters() {
         return voters;
     }
 
     static public void insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
-        voters.add(registerVoterDtoResponse.toString());
+        voters.add(registerVoterDtoResponse);
     }
 }
