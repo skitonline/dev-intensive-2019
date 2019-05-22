@@ -1,8 +1,8 @@
 package net.thumbtack.school.elections.request;
 
-import net.thumbtack.school.elections.heplinginterfaces.CheckEmpty;
+import net.thumbtack.school.elections.error.ErrorServiceVoter;
 
-public class RegisterVoterDtoRequest implements CheckEmpty {
+public class RegisterVoterDtoRequest {
     private String name, surname, patronymic;
     private String street, number, room;
     private String login, password;
@@ -20,7 +20,16 @@ public class RegisterVoterDtoRequest implements CheckEmpty {
         this.password = password;
     }
 
-    public boolean validation(){
-        return notContainsEmpty(name, surname, street, number, login, password);
+    public ErrorServiceVoter validation(){
+        if (name == null || name.isEmpty() ||
+                surname == null || surname.isEmpty() ||
+                street == null || street.isEmpty() ||
+                number == null || number.isEmpty())
+            return ErrorServiceVoter.WRONG_VOTER_DATA;
+        if (login.length() < 3)
+            return ErrorServiceVoter.WRONG_LOGIN;
+        if (password.length() < 6)
+            return ErrorServiceVoter.WRONG_PASSWORD;
+        return ErrorServiceVoter.OK;
     }
 }

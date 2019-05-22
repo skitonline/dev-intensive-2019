@@ -27,21 +27,13 @@ public class RegisterVoterDtoResponse {
         return login;
     }
 
-    public UUID getToken() {
-        return token;
-    }
-
     public void activated(){
         token = UUID.randomUUID();
         active = true;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive() {
-        active = !active;
+    public UUID getToken() {
+        return token;
     }
 
     @Override

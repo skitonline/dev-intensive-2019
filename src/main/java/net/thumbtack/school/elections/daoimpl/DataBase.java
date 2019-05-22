@@ -1,5 +1,6 @@
 package net.thumbtack.school.elections.daoimpl;
 
+import net.thumbtack.school.elections.error.ErrorServiceVoter;
 import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 
 import java.util.ArrayList;
@@ -20,15 +21,14 @@ public class DataBase {
         return voters;
     }
 
-    static public boolean insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
-        boolean insert = true;
+    static public ErrorServiceVoter insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
         for (RegisterVoterDtoResponse voter : voters) {
-            if (registerVoterDtoResponse.equals(voter) ||
-                registerVoterDtoResponse.getLogin().equals(voter.getLogin())) {
-                return false;
-            }
+            if (registerVoterDtoResponse.equals(voter))
+                return ErrorServiceVoter.DUPLICATE_VOTER;
+            if (registerVoterDtoResponse.getLogin().equals(voter.getLogin()))
+                return ErrorServiceVoter.DUPLICATE_LOGIN;
         }
         voters.add(registerVoterDtoResponse);
-        return insert;
+        return ErrorServiceVoter.OK;
     }
 }
