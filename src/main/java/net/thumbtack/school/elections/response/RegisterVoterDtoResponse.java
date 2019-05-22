@@ -27,12 +27,17 @@ public class RegisterVoterDtoResponse {
         return login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void activated(){
         token = UUID.randomUUID();
         active = true;
     }
 
     public void deactivated(){
+        token = null;
         active = false;
     }
 

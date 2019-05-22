@@ -2,7 +2,6 @@ package net.thumbtack.school.elections.service;
 
 import com.google.gson.Gson;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
@@ -29,7 +28,7 @@ public class TestServiceVoterRigister {
                 "skitonline2", "123456");
         String stringVoter2 = gson.toJson(voter2);
         String rigister2 = server.registerVoter(stringVoter2);
-        assertEquals(ErrorServiceVoter.WRONG_VOTER_DATA.getErrorString(), rigister2);
+        assertEquals(ErrorServiceVoter.VOTER_DATA.getErrorString(), rigister2);
         assertEquals(1, Server.dataBase.getVoters().size());
         //Есть все поля
         Voter voter3 = new Voter("Alexander", "Pupkin", "Maksimovich",
@@ -54,7 +53,7 @@ public class TestServiceVoterRigister {
         String stringVoter5 = gson.toJson(voter5);
         String rigister5 = server.registerVoter(stringVoter5);
         assertEquals(3, Server.dataBase.getVoters().size());
-        assertEquals(ErrorServiceVoter.WRONG_VOTER_DATA.getErrorString(), rigister5);
+        assertEquals(ErrorServiceVoter.VOTER_DATA.getErrorString(), rigister5);
         //Дубликат избирателя
         Voter voter6 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -78,7 +77,7 @@ public class TestServiceVoterRigister {
         String stringVoter8 = gson.toJson(voter8);
         String rigister8 = server.registerVoter(stringVoter8);
         assertEquals(3, Server.dataBase.getVoters().size());
-        assertEquals(ErrorServiceVoter.WRONG_LOGIN.getErrorString(), rigister8);
+        assertEquals(ErrorServiceVoter.LOGIN_LENGTH.getErrorString(), rigister8);
         //Короткий пароль
         Voter voter9 = new Voter("Petya", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -86,7 +85,7 @@ public class TestServiceVoterRigister {
         String stringVoter9 = gson.toJson(voter9);
         String rigister9 = server.registerVoter(stringVoter9);
         assertEquals(3, Server.dataBase.getVoters().size());
-        assertEquals(ErrorServiceVoter.WRONG_PASSWORD.getErrorString(), rigister9);
+        assertEquals(ErrorServiceVoter.PASSWORD_LENGTH.getErrorString(), rigister9);
     }
 
     @Test
@@ -99,9 +98,20 @@ public class TestServiceVoterRigister {
         String rigister1 = server.registerVoter(stringVoter1);
         assertEquals(1, Server.dataBase.getVoters().size());
         assertTrue(Server.dataBase.getVoters().get(0).isActive());
-        String logOut = server.logoutVoter(voter1.getLogin());
+        String logout1 = server.logoutVoter(voter1.getLogin());
         assertEquals(1, Server.dataBase.getVoters().size());
-        assertEquals(ErrorServiceVoter.OK.getErrorString(), logOut);
+        assertEquals(ErrorServiceVoter.OK.getErrorString(), logout1);
         assertFalse(Server.dataBase.getVoters().get(0).isActive());
+        String logout2 = server.logoutVoter(null);
+        assertEquals(ErrorServiceVoter.LOGIN_LENGTH.getErrorString(), logout2);
+        String logout3 = server.logoutVoter(voter1.getLogin());
+        assertEquals(ErrorServiceVoter.ALREADY_DEACTIVATED.getErrorString(), logout3);
+        String login1 = server.loginVoter("[skitonline1, 123456]");
+        assertTrue(Server.dataBase.getVoters().get(0).isActive());
+        assertEquals(ErrorServiceVoter.OK.getErrorString(), login1);
+        String login2 = server.loginVoter("[skit]");
+        assertEquals(ErrorServiceVoter.LOGGING_LENGTH.getErrorString(), login2);
+        String login3 = server.loginVoter("[skitonline1, 12345678]");
+        assertEquals(ErrorServiceVoter.LOGIN_OR_PASSWORD.getErrorString(), login3);
     }
 }

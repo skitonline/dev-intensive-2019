@@ -31,4 +31,29 @@ public class DataBase {
         voters.add(registerVoterDtoResponse);
         return ErrorServiceVoter.OK;
     }
+
+    static public ErrorServiceVoter logout(String login){
+        for (RegisterVoterDtoResponse registerVoterDtoResponse : voters){
+            if (login.equals(registerVoterDtoResponse.getLogin())){
+                if (!registerVoterDtoResponse.isActive())
+                    return ErrorServiceVoter.ALREADY_DEACTIVATED;
+                registerVoterDtoResponse.deactivated();
+                return ErrorServiceVoter.OK;
+            }
+        }
+        return ErrorServiceVoter.NOT_FOUND_LOGIN;
+    }
+
+    static public ErrorServiceVoter logging(String login, String password){
+        for (RegisterVoterDtoResponse registerVoterDtoResponse : voters){
+            if (login.equals(registerVoterDtoResponse.getLogin()) &&
+                    password.equals(registerVoterDtoResponse.getPassword())){
+                if (registerVoterDtoResponse.isActive())
+                    return ErrorServiceVoter.ALREADY_ACTIVATED;
+                registerVoterDtoResponse.activated();
+                return ErrorServiceVoter.OK;
+            }
+        }
+        return ErrorServiceVoter.LOGIN_OR_PASSWORD;
+    }
 }

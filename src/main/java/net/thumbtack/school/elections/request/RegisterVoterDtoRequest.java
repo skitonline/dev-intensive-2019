@@ -25,11 +25,11 @@ public class RegisterVoterDtoRequest {
                 surname == null || surname.isEmpty() ||
                 street == null || street.isEmpty() ||
                 number == null || number.isEmpty())
-            return ErrorServiceVoter.WRONG_VOTER_DATA;
+            return ErrorServiceVoter.VOTER_DATA;
         if (login == null || login.length() < 3)
-            return ErrorServiceVoter.WRONG_LOGIN;
+            return ErrorServiceVoter.LOGIN_LENGTH;
         if (password == null || password.length() < 6)
-            return ErrorServiceVoter.WRONG_PASSWORD;
+            return ErrorServiceVoter.PASSWORD_LENGTH;
         return ErrorServiceVoter.OK;
     }
 }
