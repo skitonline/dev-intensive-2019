@@ -26,9 +26,9 @@ public class RegisterVoterDtoRequest {
                 street == null || street.isEmpty() ||
                 number == null || number.isEmpty())
             return ErrorServiceVoter.WRONG_VOTER_DATA;
-        if (login.length() < 3)
+        if (login == null || login.length() < 3)
             return ErrorServiceVoter.WRONG_LOGIN;
-        if (password.length() < 6)
+        if (password == null || password.length() < 6)
             return ErrorServiceVoter.WRONG_PASSWORD;
         return ErrorServiceVoter.OK;
     }

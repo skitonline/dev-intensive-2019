@@ -32,8 +32,16 @@ public class RegisterVoterDtoResponse {
         active = true;
     }
 
+    public void deactivated(){
+        active = false;
+    }
+
     public UUID getToken() {
         return token;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     @Override

@@ -9,12 +9,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestServiceVoter {
+public class TestServiceVoterRigister {
+    Gson gson = new Gson();
+    Server server = new Server();
 
     @Test
     public void registerVoter() {
-        Gson gson = new Gson();
-        Server server = new Server();
         //Есть все поля
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -82,10 +82,26 @@ public class TestServiceVoter {
         //Короткий пароль
         Voter voter9 = new Voter("Petya", "Pupkin", "",
                 "Zarubina", "9", "10",
-                "skitoooo", "12345");
+                "skitoooo", null);
         String stringVoter9 = gson.toJson(voter9);
         String rigister9 = server.registerVoter(stringVoter9);
         assertEquals(3, Server.dataBase.getVoters().size());
         assertEquals(ErrorServiceVoter.WRONG_PASSWORD.getErrorString(), rigister9);
+    }
+
+    @Test
+    public void logoutAndLoginVoter(){
+        Server.dataBase.getVoters().clear();
+        Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456");
+        String stringVoter1 = gson.toJson(voter1);
+        String rigister1 = server.registerVoter(stringVoter1);
+        assertEquals(1, Server.dataBase.getVoters().size());
+        assertTrue(Server.dataBase.getVoters().get(0).isActive());
+        String logOut = server.logoutVoter(voter1.getLogin());
+        assertEquals(1, Server.dataBase.getVoters().size());
+        assertEquals(ErrorServiceVoter.OK.getErrorString(), logOut);
+        assertFalse(Server.dataBase.getVoters().get(0).isActive());
     }
 }
