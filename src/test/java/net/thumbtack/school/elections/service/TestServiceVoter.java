@@ -3,10 +3,12 @@ package net.thumbtack.school.elections.service;
 import com.google.gson.Gson;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
+import net.thumbtack.school.elections.request.server.User;
 import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.response.RestoreVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
-import net.thumbtack.school.elections.roles.parents.Login;
+import net.thumbtack.school.elections.request.server.Login;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
 
@@ -117,7 +119,7 @@ public class TestServiceVoter {
     }
 
     @Test
-    public void logoutAndLoginVoter(){
+    public void logoutAndRestoreVoter(){
         Server.dataBase.getVoters().clear();
         Server.dataBase.getTokens().clear();
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
@@ -146,6 +148,20 @@ public class TestServiceVoter {
         LogoutVoterDtoResponse logoutVoterDtoResponse4 =
                 gson.fromJson(logout4, LogoutVoterDtoResponse.class);
         assertEquals(ErroDataBase.NOW_LOGOUT.getErrorString(), logoutVoterDtoResponse4.getError());
+        String stringRestore1 = gson.toJson(new User("skitonline1", "123456"));
+        String restore1 = server.restoreAccess(stringRestore1);
+        RestoreVoterDtoResponse restoreVoterDtoResponse1 =
+                gson.fromJson(restore1, RestoreVoterDtoResponse.class);
+        assertEquals(ErroDataBase.OK.getErrorString(), restoreVoterDtoResponse1.getError());
+        String stringRestore2 = gson.toJson(new User("buyniy", "123456"));
+        String restore2 = server.restoreAccess(stringRestore2);
+        RestoreVoterDtoResponse restoreVoterDtoResponse2 =
+                gson.fromJson(restore2, RestoreVoterDtoResponse.class);
+        assertEquals(ErroDataBase.LOGIN_OR_PASSWORD.getErrorString(), restoreVoterDtoResponse2.getError());
+        String stringRestore3 = gson.toJson(new User("skitonline1", "123456"));
+        String restore3 = server.restoreAccess(stringRestore3);
+        RestoreVoterDtoResponse restoreVoterDtoResponse3 =
+                gson.fromJson(restore3, RestoreVoterDtoResponse.class);
+        assertEquals(ErroDataBase.NOW_ACTIVED.getErrorString(), restoreVoterDtoResponse3.getError());
     }
-
 }

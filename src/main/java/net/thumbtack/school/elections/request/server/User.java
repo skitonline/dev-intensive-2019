@@ -1,6 +1,8 @@
-package net.thumbtack.school.elections.roles.parents;
+package net.thumbtack.school.elections.request.server;
 
-public class User extends Login{
+import net.thumbtack.school.elections.request.server.Login;
+
+public class User extends Login {
     private String password;
 
     public User(String login, String password) {

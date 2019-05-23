@@ -1,8 +1,9 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
+import net.thumbtack.school.elections.request.server.User;
 import net.thumbtack.school.elections.roles.Voter;
-import net.thumbtack.school.elections.roles.parents.Login;
+import net.thumbtack.school.elections.request.server.Login;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +53,20 @@ public class DataBase {
             }
         }
         return ErroDataBase.LOGIN_NOT_FOUND;
+    }
+
+    static public ErroDataBase restore(User user){
+        for (int i = 0; i < voters.size(); i++){
+            if (user.getLogin().equals(voters.get(i).getLogin()) &&
+                    user.getPassword().equals(voters.get(i).getPassword())) {
+                if (tokens.get(i) == null) {
+                    tokens.set(i, UUID.randomUUID().toString());
+                    return ErroDataBase.OK;
+                }
+                else
+                    return ErroDataBase.NOW_ACTIVED;
+            }
+        }
+        return ErroDataBase.LOGIN_OR_PASSWORD;
     }
 }

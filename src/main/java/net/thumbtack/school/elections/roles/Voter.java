@@ -1,6 +1,6 @@
 package net.thumbtack.school.elections.roles;
 
-import net.thumbtack.school.elections.roles.parents.User;
+import net.thumbtack.school.elections.request.server.User;
 import org.apache.commons.collections4.OrderedMap;
 import org.apache.commons.collections4.map.LinkedMap;
 

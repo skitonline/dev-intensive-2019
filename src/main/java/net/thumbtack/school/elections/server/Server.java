@@ -27,4 +27,8 @@ public class Server {
     public String logoutVoter(String requestJsonString){
         return serviceVoter.logoutVoter(requestJsonString);
     }
+
+    public String restoreAccess(String requestJsonString){
+        return serviceVoter.restoreAccess(requestJsonString);
+    }
 }
