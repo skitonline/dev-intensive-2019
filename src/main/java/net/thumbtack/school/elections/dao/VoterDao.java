@@ -1,10 +1,8 @@
 package net.thumbtack.school.elections.dao;
 
-import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.error.ErroDataBase;
+import net.thumbtack.school.elections.roles.Voter;
 
 public interface VoterDao {
-    ErrorServiceVoter insert(RegisterVoterDtoResponse registerVoterDtoResponse);
-    ErrorServiceVoter logout(String login);
-    ErrorServiceVoter logging(String login, String password);
+    ErroDataBase insert(Voter insertVoter);
 }

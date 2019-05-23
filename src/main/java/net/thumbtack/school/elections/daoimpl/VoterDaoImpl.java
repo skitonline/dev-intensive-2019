@@ -1,23 +1,13 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.dao.VoterDao;
-import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.error.ErroDataBase;
+import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 
 public class VoterDaoImpl implements VoterDao {
     @Override
-    public ErrorServiceVoter insert(RegisterVoterDtoResponse registerVoterDtoResponse) {
-        return Server.dataBase.insert(registerVoterDtoResponse);
-    }
-
-    @Override
-    public ErrorServiceVoter logout(String login) {
-        return Server.dataBase.logout(login);
-    }
-
-    @Override
-    public ErrorServiceVoter logging(String login, String password) {
-        return Server.dataBase.logging(login, password);
+    public ErroDataBase insert(Voter insertVoter) {
+        return Server.dataBase.insert(insertVoter);
     }
 }

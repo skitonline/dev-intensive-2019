@@ -1,10 +1,15 @@
 package net.thumbtack.school.elections.roles;
 
+import org.apache.commons.collections4.OrderedMap;
+import org.apache.commons.collections4.map.LinkedMap;
+
+import java.util.Objects;
+
 public class Voter {
     private String name, surname, patronymic;
     private String street, number, room;
     private String login, password;
-    private boolean active;
+    private OrderedMap proposals;
 
     public Voter(String name, String surname, String patronymic,
                  String street, String number, String room,
@@ -17,46 +22,27 @@ public class Voter {
         this.room = room;
         this.login = login;
         this.password = password;
-        active = true;
+        proposals = new LinkedMap();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getRoom() {
-        return room;
+    public void addProposal(String proposal, int rating){
+        proposals.put(proposal, rating);
     }
 
     public String getLogin() {
         return login;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Voter voter = (Voter) o;
+        return Objects.equals(name, voter.name) &&
+                Objects.equals(surname, voter.surname) &&
+                Objects.equals(patronymic, voter.patronymic) &&
+                Objects.equals(street, voter.street) &&
+                Objects.equals(number, voter.number) &&
+                Objects.equals(room, voter.room);
     }
 }

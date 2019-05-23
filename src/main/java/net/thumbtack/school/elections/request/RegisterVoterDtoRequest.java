@@ -25,7 +25,7 @@ public class RegisterVoterDtoRequest {
                 surname == null || surname.isEmpty() ||
                 street == null || street.isEmpty() ||
                 number == null || number.isEmpty())
-            return ErrorServiceVoter.VOTER_DATA;
+            return ErrorServiceVoter.DATA;
         if (login == null || login.length() < 3)
             return ErrorServiceVoter.LOGIN_LENGTH;
         if (password == null || password.length() < 6)
