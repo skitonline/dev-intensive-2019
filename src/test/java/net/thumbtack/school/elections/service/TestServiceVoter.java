@@ -1,9 +1,12 @@
 package net.thumbtack.school.elections.service;
 
 import com.google.gson.Gson;
-import net.thumbtack.school.elections.request.RegisterVoterDtoRequest;
+import net.thumbtack.school.elections.error.ErroDataBase;
+import net.thumbtack.school.elections.error.ErrorServiceVoter;
+import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
+import net.thumbtack.school.elections.roles.parents.Login;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
 
@@ -111,6 +114,38 @@ public class TestServiceVoter {
         assertEquals(gson.toJson(registerVoterDtoResponse9), rigister9);
         assertEquals(3, Server.dataBase.getVoters().size());
         assertEquals(3, Server.dataBase.getTokens().size());
+    }
+
+    @Test
+    public void logoutAndLoginVoter(){
+        Server.dataBase.getVoters().clear();
+        Server.dataBase.getTokens().clear();
+        Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456");
+        String stringVoter1 = gson.toJson(voter1);
+        String rigister1 = server.registerVoter(stringVoter1);
+
+        String stringLogout1 = gson.toJson(new Login("sk"));
+        String logout1 = server.logoutVoter(stringLogout1);
+        LogoutVoterDtoResponse logoutVoterDtoResponse1 =
+                gson.fromJson(logout1, LogoutVoterDtoResponse.class);
+        assertEquals(ErrorServiceVoter.LOGIN_LENGTH.getErrorString(), logoutVoterDtoResponse1.getError());
+        String stringLogout2 = gson.toJson(new Login("nettakogo"));
+        String logout2 = server.logoutVoter(stringLogout2);
+        LogoutVoterDtoResponse logoutVoterDtoResponse2 =
+                gson.fromJson(logout2, LogoutVoterDtoResponse.class);
+        assertEquals(ErroDataBase.LOGIN_NOT_FOUND.getErrorString(), logoutVoterDtoResponse2.getError());
+        String stringLogout3 = gson.toJson(new Login("skitonline1"));
+        String logout3 = server.logoutVoter(stringLogout3);
+        LogoutVoterDtoResponse logoutVoterDtoResponse3 =
+                gson.fromJson(logout3, LogoutVoterDtoResponse.class);
+        assertEquals(ErroDataBase.OK.getErrorString(), logoutVoterDtoResponse3.getError());
+        String stringLogout4 = gson.toJson(new Login("skitonline1"));
+        String logout4 = server.logoutVoter(stringLogout4);
+        LogoutVoterDtoResponse logoutVoterDtoResponse4 =
+                gson.fromJson(logout4, LogoutVoterDtoResponse.class);
+        assertEquals(ErroDataBase.NOW_LOGOUT.getErrorString(), logoutVoterDtoResponse4.getError());
     }
 
 }

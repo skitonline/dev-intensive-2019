@@ -1,7 +1,6 @@
 package net.thumbtack.school.elections.response;
 
-public class RegisterVoterDtoResponse {
-    private String token;
+public class LogoutVoterDtoResponse {
     private String error;
 
     public String getError() {
@@ -10,9 +9,5 @@ public class RegisterVoterDtoResponse {
 
     public void setError(String error) {
         this.error = error;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

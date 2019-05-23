@@ -23,4 +23,8 @@ public class Server {
     public String registerVoter(String requestJsonString){
         return serviceVoter.registerVoter(requestJsonString);
     }
+
+    public String logoutVoter(String requestJsonString){
+        return serviceVoter.logoutVoter(requestJsonString);
+    }
 }

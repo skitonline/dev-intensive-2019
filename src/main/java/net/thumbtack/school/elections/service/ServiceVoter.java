@@ -6,9 +6,12 @@ import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.daoimpl.VoterDaoImpl;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
+import net.thumbtack.school.elections.request.LogoutVoterDtoRequest;
 import net.thumbtack.school.elections.request.RegisterVoterDtoRequest;
+import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
+import net.thumbtack.school.elections.roles.parents.Login;
 
 public class ServiceVoter {
     private VoterDaoImpl voterDao = new VoterDaoImpl();
@@ -32,5 +35,24 @@ public class ServiceVoter {
                 registerVoterDtoResponse.setToken(DataBase.getTokens().get(DataBase.getTokens().size() - 1));
         }
         return gson.toJson(registerVoterDtoResponse);
+    }
+
+    public String logoutVoter(String requestJsonString){
+        Gson gson = new Gson();
+        LogoutVoterDtoRequest logoutVoterDtoRequest;
+        LogoutVoterDtoResponse logoutVoterDtoResponse = new LogoutVoterDtoResponse();
+        try {
+            logoutVoterDtoRequest = gson.fromJson(requestJsonString, LogoutVoterDtoRequest.class);
+        } catch (JsonParseException e){
+            logoutVoterDtoResponse.setError(ErrorServiceVoter.PARSING.getErrorString());
+            return gson.toJson(logoutVoterDtoResponse);
+        }
+        logoutVoterDtoResponse.setError(logoutVoterDtoRequest.validation().getErrorString());
+        if (logoutVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
+            String jsonVoter = gson.toJson(logoutVoterDtoRequest);
+            Login logoutVoter = gson.fromJson(jsonVoter, Login.class);
+            logoutVoterDtoResponse.setError(voterDao.logout(logoutVoter).getErrorString());
+        }
+        return gson.toJson(logoutVoterDtoResponse);
     }
 }

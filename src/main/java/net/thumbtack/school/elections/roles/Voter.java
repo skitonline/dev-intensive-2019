@@ -1,36 +1,31 @@
 package net.thumbtack.school.elections.roles;
 
+import net.thumbtack.school.elections.roles.parents.User;
 import org.apache.commons.collections4.OrderedMap;
 import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.Objects;
 
-public class Voter {
+public class Voter extends User {
     private String name, surname, patronymic;
     private String street, number, room;
-    private String login, password;
     private OrderedMap proposals;
 
     public Voter(String name, String surname, String patronymic,
                  String street, String number, String room,
                  String login, String password) {
+        super(login, password);
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.street = street;
         this.number = number;
         this.room = room;
-        this.login = login;
-        this.password = password;
         proposals = new LinkedMap();
     }
 
     public void addProposal(String proposal, int rating){
         proposals.put(proposal, rating);
-    }
-
-    public String getLogin() {
-        return login;
     }
 
     @Override
