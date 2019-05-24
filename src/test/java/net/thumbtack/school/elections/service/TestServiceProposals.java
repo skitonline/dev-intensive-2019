@@ -86,7 +86,7 @@ public class TestServiceProposals {
                 addProposalRatingDtoResponse.getError());
         //недопустимая оценка
         voter2.setProposal("very nice");
-        voter2.setRatingProposal(6);
+        voter2.setRatingProposal(7);
         stringVoter2 = gson.toJson(voter2);
         String setRatingPorposa3 = server.addProposalRating(stringVoter2);
         AddProposalRatingDtoResponse addProposalRatingDtoResponse1 =
