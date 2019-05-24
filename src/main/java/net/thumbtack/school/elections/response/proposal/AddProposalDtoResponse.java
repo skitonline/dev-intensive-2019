@@ -1,4 +1,4 @@
-package net.thumbtack.school.elections.response;
+package net.thumbtack.school.elections.response.proposal;
 
 public class AddProposalDtoResponse {
     private String error;

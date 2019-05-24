@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceProposals;
-import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.response.AddProposalDtoResponse;
-import net.thumbtack.school.elections.response.AddProposalRatingDtoResponse;
-import net.thumbtack.school.elections.response.voter.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.response.proposal.AddProposalDtoResponse;
+import net.thumbtack.school.elections.response.proposal.AddProposalRatingDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
@@ -93,5 +91,45 @@ public class TestServiceProposals {
                 gson.fromJson(setRatingPorposa3, AddProposalRatingDtoResponse.class);
         assertEquals(ErrorServiceProposals.WRONG_RATING.getErrorString(),
                 addProposalRatingDtoResponse1.getError());
+        //пользователь покинул сервер, оценки удалились
+        String logout = server.logoutVoter(stringVoter2);
+        assertEquals(1, DataBase.getPropsals().get("very nice").size());
+    }
+
+    @Test
+    public void removeProposalRating() {
+        DataBase.clear();
+        //регаем 1 ползьователя
+        Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456");
+        String stringVoter1 = gson.toJson(voter1);
+        String rigister1 = server.registerVoter(stringVoter1);
+        voter1 = DataBase.getVoters().get(0);
+        //пользователь подает предложение
+        voter1.setProposal("very nice");
+        stringVoter1 = gson.toJson(voter1);
+        String addProposal = server.addProposals(stringVoter1);
+        //регаем 2 ползьователя
+        Voter voter2 = new Voter("Alexander", "NeEvseev", "Maksimovich",
+                "Zarubina", "9", "10",
+                "skitonline3", "123456");
+        String stringVoter2 = gson.toJson(voter2);
+        String rigister2 = server.registerVoter(stringVoter2);
+        voter2 = DataBase.getVoters().get(1);
+        //пользователь подает предложение
+        voter2.setProposal("very very nice");
+        stringVoter2 = gson.toJson(voter2);
+        String addProposa2 = server.addProposals(stringVoter2);
+        //2ой пользователь оценивает 1го
+        voter2.setRatingProposal(2);
+        voter2.setProposal("very nice");
+        stringVoter2 = gson.toJson(voter2);
+        assertEquals(1, DataBase.getPropsals().get("very nice").size());
+        String setRatingPorposal = server.addProposalRating(stringVoter2);
+        assertEquals(2, DataBase.getPropsals().get("very nice").size());
+        //удаляем оценку
+        String removeRating = server.removeProposalRating(stringVoter2);
+        assertEquals(1, DataBase.getPropsals().get("very nice").size());
     }
 }

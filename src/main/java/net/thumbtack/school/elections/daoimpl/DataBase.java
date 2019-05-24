@@ -1,17 +1,15 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.error.ErrorServiceProposals;
-import net.thumbtack.school.elections.request.AddProposalDtoRequest;
-import net.thumbtack.school.elections.request.AddProposalRatingDtoRequest;
+import net.thumbtack.school.elections.request.proposal.AddProposalDtoRequest;
+import net.thumbtack.school.elections.request.proposal.AddProposalRatingDtoRequest;
+import net.thumbtack.school.elections.request.proposal.RemoveProposalRatingDtoRequest;
 import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
 import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
 import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
 import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
 import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
 import net.thumbtack.school.elections.roles.Voter;
-import org.apache.commons.collections4.OrderedMap;
-import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.*;
 
@@ -37,6 +35,7 @@ public class DataBase {
 
     public static void clear() {
         voters.clear();
+        propsals = new HashMap<>();
     }
 
     static public ErroDataBase insert(Voter insertVoter) {
@@ -52,13 +51,16 @@ public class DataBase {
     }
 
     static public ErroDataBase logout(LogoutVoterDtoRequest login){
-        for (Voter voter : voters){
-            if (login.getLogin().equals(voter.getLogin())) {
-                if (voter.getToken() == null)
+        for (int i = 0; i < voters.size(); i++){
+            if (login.getLogin().equals(voters.get(i).getLogin())) {
+                if (voters.get(i).getToken() == null)
                     return ErroDataBase.NOW_LOGOUT;
                 else {
-                    voter.doNullToken();
-                    voter.setCandidate(false);
+                    String token = voters.get(i).getToken();
+                    voters.get(i).doNullToken();
+                    voters.get(i).setCandidate(false);
+                    for(Map.Entry<String, Map<String,Integer>> item : DataBase.getPropsals().entrySet())
+                        item.getValue().keySet().removeIf(el -> el.equals(token));
                     return ErroDataBase.OK;
                 }
             }
@@ -131,12 +133,12 @@ public class DataBase {
     static public ErroDataBase addProposal(AddProposalDtoRequest addProposalDtoRequest) {
         if (propsals == null)
             propsals = new HashMap<>();
+        for (Voter voter : voters)
+            if (addProposalDtoRequest.getToken().equals(voter.getToken()))
+                voter.addPorposal(addProposalDtoRequest.getProposal());
         if (propsals.get(addProposalDtoRequest.getProposal()) == null){
             propsals.put(addProposalDtoRequest.getProposal(), new HashMap<>());
             propsals.get(addProposalDtoRequest.getProposal()).put(addProposalDtoRequest.getToken(), 5);
-            for (Voter voter : voters)
-                if (addProposalDtoRequest.getToken().equals(voter.getToken()))
-                    voter.addPorposal(addProposalDtoRequest.getProposal());
             return ErroDataBase.OK;
         }
         else
@@ -146,6 +148,16 @@ public class DataBase {
     static public ErroDataBase addProposalRating(AddProposalRatingDtoRequest addProposalRatingDtoRequest) {
         propsals.get(addProposalRatingDtoRequest.getProposal()).
                 put(addProposalRatingDtoRequest.getToken(), addProposalRatingDtoRequest.getRatingProposal());
+        return ErroDataBase.OK;
+    }
+
+
+    static public ErroDataBase removeProposalRating
+            (RemoveProposalRatingDtoRequest removeProposalRatingDtoRequest) {
+        for(Map.Entry<String, Map<String,Integer>> item : DataBase.getPropsals().entrySet())
+            if (item.getKey().equals(removeProposalRatingDtoRequest.getProposal()))
+                if (item.getValue().remove(removeProposalRatingDtoRequest.getToken()) == null)
+                    return ErroDataBase.PROPOSAL_NOT_FOUND;
         return ErroDataBase.OK;
     }
 }

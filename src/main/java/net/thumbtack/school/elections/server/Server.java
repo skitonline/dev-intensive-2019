@@ -55,4 +55,8 @@ public class Server {
     public String addProposalRating(String requestJsonString){
         return serviceProposals.addProposalRating(requestJsonString);
     }
+
+    public String removeProposalRating(String requestJsonString){
+        return serviceProposals.removeProposalRating(requestJsonString);
+    }
 }

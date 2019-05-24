@@ -1,4 +1,4 @@
-package net.thumbtack.school.elections.request;
+package net.thumbtack.school.elections.request.proposal;
 
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;

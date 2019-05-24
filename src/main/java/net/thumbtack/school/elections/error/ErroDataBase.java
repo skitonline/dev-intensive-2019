@@ -12,7 +12,8 @@ public enum ErroDataBase {
     WAIT_ACCEPT_ADD_CANDIDATE("Вы выдвинули кандидата, он должен дать согласие"),
     NOT_ADD_CANDIDATE("Вас не выдвигали в кандидаты"),
     NOT_CANDIDATE("Пользователь не является кандидатом"),
-    NOW_ADD_PROPOSAL("Предложение уже добавлено");
+    NOW_ADD_PROPOSAL("Предложение уже добавлено"),
+    PROPOSAL_NOT_FOUND("Предложение не найдено");
 
     public String getErrorString() {
         return errorString;

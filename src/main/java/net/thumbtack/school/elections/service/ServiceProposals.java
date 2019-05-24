@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import net.thumbtack.school.elections.daoimpl.ProposalsDaoImpl;
 import net.thumbtack.school.elections.error.ErrorServiceCandidate;
-import net.thumbtack.school.elections.request.AddProposalDtoRequest;
-import net.thumbtack.school.elections.request.AddProposalRatingDtoRequest;
-import net.thumbtack.school.elections.response.AddProposalDtoResponse;
-import net.thumbtack.school.elections.response.AddProposalRatingDtoResponse;
+import net.thumbtack.school.elections.request.proposal.AddProposalDtoRequest;
+import net.thumbtack.school.elections.request.proposal.AddProposalRatingDtoRequest;
+import net.thumbtack.school.elections.request.proposal.RemoveProposalRatingDtoRequest;
+import net.thumbtack.school.elections.response.proposal.AddProposalDtoResponse;
+import net.thumbtack.school.elections.response.proposal.AddProposalRatingDtoResponse;
+import net.thumbtack.school.elections.response.proposal.RemoveProposalRatingDtoResponse;
 
 public class ServiceProposals {
     ProposalsDaoImpl proposalsDao = new ProposalsDaoImpl();
@@ -45,5 +47,23 @@ public class ServiceProposals {
                     proposalsDao.addProposalRating(addProposalRatingDtoRequest).getErrorString());
         }
         return gson.toJson(addProposalRatingDtoResponse);
+    }
+
+    public String removeProposalRating(String requestJsonString){
+        Gson gson = new Gson();
+        RemoveProposalRatingDtoRequest removeProposalRatingDtoRequest;
+        RemoveProposalRatingDtoResponse removeProposalRatingDtoResponse = new RemoveProposalRatingDtoResponse();
+        try {
+            removeProposalRatingDtoRequest = gson.fromJson(requestJsonString, RemoveProposalRatingDtoRequest.class);
+        } catch (JsonParseException e){
+            removeProposalRatingDtoResponse.setError(ErrorServiceCandidate.PARSING.getErrorString());
+            return gson.toJson(removeProposalRatingDtoResponse);
+        }
+        removeProposalRatingDtoResponse.setError(removeProposalRatingDtoRequest.validation().getErrorString());
+        if (removeProposalRatingDtoResponse.getError().equals(ErrorServiceCandidate.OK.getErrorString())){
+            removeProposalRatingDtoResponse.setError(
+                    proposalsDao.removeProposalRating(removeProposalRatingDtoRequest).getErrorString());
+        }
+        return gson.toJson(removeProposalRatingDtoResponse);
     }
 }
