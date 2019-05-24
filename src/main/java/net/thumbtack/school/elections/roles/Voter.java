@@ -1,9 +1,5 @@
 package net.thumbtack.school.elections.roles;
 
-import com.sun.deploy.util.OrderedHashSet;
-import org.apache.commons.collections4.OrderedMap;
-import org.apache.commons.collections4.map.LinkedMap;
-
 import java.util.*;
 
 public class Voter{
