@@ -1,6 +1,4 @@
-package net.thumbtack.school.elections.request.server;
-
-import net.thumbtack.school.elections.request.server.Login;
+package net.thumbtack.school.elections.roles.jsonobject;
 
 public class User extends Login {
     private String password;

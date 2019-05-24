@@ -9,12 +9,10 @@ import net.thumbtack.school.elections.error.ErrorServiceVoter;
 import net.thumbtack.school.elections.request.LogoutVoterDtoRequest;
 import net.thumbtack.school.elections.request.RegisterVoterDtoRequest;
 import net.thumbtack.school.elections.request.RestoreVoterDtoRequest;
-import net.thumbtack.school.elections.request.server.User;
 import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.response.RestoreVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
-import net.thumbtack.school.elections.request.server.Login;
 
 public class ServiceVoter {
     private VoterDaoImpl voterDao = new VoterDaoImpl();
@@ -35,7 +33,8 @@ public class ServiceVoter {
             Voter insertVoter = gson.fromJson(jsonVoter, Voter.class);
             registerVoterDtoResponse.setError(voterDao.insert(insertVoter).getErrorString());
             if (registerVoterDtoResponse.getError().equals(ErroDataBase.OK.toString()))
-                registerVoterDtoResponse.setToken(DataBase.getTokens().get(DataBase.getTokens().size() - 1));
+                registerVoterDtoResponse.setToken(
+                        DataBase.getVoters().get(DataBase.getVoters().size() - 1).getToken());
         }
         return gson.toJson(registerVoterDtoResponse);
     }
@@ -52,9 +51,7 @@ public class ServiceVoter {
         }
         logoutVoterDtoResponse.setError(logoutVoterDtoRequest.validation().getErrorString());
         if (logoutVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
-            String jsonVoter = gson.toJson(logoutVoterDtoRequest);
-            Login logoutVoter = gson.fromJson(jsonVoter, Login.class);
-            logoutVoterDtoResponse.setError(voterDao.logout(logoutVoter).getErrorString());
+            logoutVoterDtoResponse.setError(voterDao.logout(logoutVoterDtoRequest).getErrorString());
         }
         return gson.toJson(logoutVoterDtoResponse);
     }
@@ -71,9 +68,7 @@ public class ServiceVoter {
         }
         restoreVoterDtoResponse.setError(restoreVoterDtoRequest.validation().getErrorString());
         if (restoreVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
-            String jsonVoter = gson.toJson(restoreVoterDtoRequest);
-            User user = gson.fromJson(jsonVoter, User.class);
-            restoreVoterDtoResponse.setError(voterDao.restore(user).getErrorString());
+            restoreVoterDtoResponse.setError(voterDao.restore(restoreVoterDtoRequest).getErrorString());
         }
         return gson.toJson(restoreVoterDtoResponse);
     }

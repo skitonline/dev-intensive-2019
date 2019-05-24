@@ -1,4 +1,4 @@
-package net.thumbtack.school.elections.request.server;
+package net.thumbtack.school.elections.roles.jsonobject;
 
 public class Login {
     private String login;
