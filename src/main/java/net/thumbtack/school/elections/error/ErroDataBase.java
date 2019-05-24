@@ -10,7 +10,9 @@ public enum ErroDataBase {
     NOW_ACTIVED("Аккаунт уже активирован"),
     NOW_CANDIDATE("Выдвигаемый избиратель уже является кандидатом"),
     WAIT_ACCEPT_ADD_CANDIDATE("Вы выдвинули кандидата, он должен дать согласие"),
-    NOT_ADD_CANDIDATE("Вас не выдвигали в кандидаты");
+    NOT_ADD_CANDIDATE("Вас не выдвигали в кандидаты"),
+    NOT_CANDIDATE("Пользователь не является кандидатом"),
+    NOW_ADD_PROPOSAL("Предложение уже добавлено");
 
     public String getErrorString() {
         return errorString;

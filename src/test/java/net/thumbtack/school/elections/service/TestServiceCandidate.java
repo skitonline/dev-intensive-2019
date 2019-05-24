@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceCandidate;
-import net.thumbtack.school.elections.response.AcceptAddCandidateDtoResponse;
-import net.thumbtack.school.elections.response.AddCandidateDtoResponse;
+import net.thumbtack.school.elections.response.candidate.AcceptAddCandidateDtoResponse;
+import net.thumbtack.school.elections.response.candidate.AddCandidateDtoResponse;
+import net.thumbtack.school.elections.response.candidate.DeleteCandidateDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class TestServiceCandidate {
     Gson gson = new Gson();
 
     @Test
-    public void addCandidate() {
+    public void addAcceptDeleteCandidate() {
         DataBase.clear();
         //регистрация 2х пользователей
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
@@ -57,7 +58,8 @@ public class TestServiceCandidate {
         String addCandidate3 = server.addCandidate(stringVoter1);
         AddCandidateDtoResponse addCandidateDtoResponse3 =
                 gson.fromJson(addCandidate3, AddCandidateDtoResponse.class);
-        assertEquals(ErroDataBase.WAIT_ACCEPT_ADD_CANDIDATE.getErrorString(), addCandidateDtoResponse3.getError());
+        assertEquals(ErroDataBase.WAIT_ACCEPT_ADD_CANDIDATE.getErrorString(),
+                addCandidateDtoResponse3.getError());
         assertFalse(DataBase.getVoters().get(1).isCandidate());
         //voter 2 принимает выдвижение и становится кандидатом
         stringVoter2 = gson.toJson(DataBase.getVoters().get(1));
@@ -67,5 +69,19 @@ public class TestServiceCandidate {
         assertEquals(ErroDataBase.OK.getErrorString(),
                 acceptAddCandidateDtoResponse2.getError());
         assertTrue(DataBase.getVoters().get(1).isCandidate());
+        //voter2 перестает быть кандидатом
+        stringVoter2 = gson.toJson(DataBase.getVoters().get(1));
+        String delete1 = server.deleteCandidate(stringVoter2);
+        DeleteCandidateDtoResponse deleteCandidateDtoResponse1 =
+                gson.fromJson(delete1, DeleteCandidateDtoResponse.class);
+        assertEquals(ErroDataBase.OK.getErrorString(), deleteCandidateDtoResponse1.getError());
+        assertFalse(DataBase.getVoters().get(1).isCandidate());
+        //voter2 не кандидат, но все равно пытается сняться
+        stringVoter2 = gson.toJson(DataBase.getVoters().get(1));
+        String delete2 = server.deleteCandidate(stringVoter2);
+        DeleteCandidateDtoResponse deleteCandidateDtoResponse2 =
+                gson.fromJson(delete2, DeleteCandidateDtoResponse.class);
+        assertEquals(ErroDataBase.NOT_CANDIDATE.getErrorString(), deleteCandidateDtoResponse2.getError());
+        assertFalse(DataBase.getVoters().get(1).isCandidate());
     }
 }

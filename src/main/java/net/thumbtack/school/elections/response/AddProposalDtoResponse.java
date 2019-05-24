@@ -1,6 +1,6 @@
 package net.thumbtack.school.elections.response;
 
-public class LogoutVoterDtoResponse {
+public class AddProposalDtoResponse {
     private String error;
 
     public String getError() {

@@ -2,6 +2,7 @@ package net.thumbtack.school.elections.server;
 
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.service.ServiceCandidate;
+import net.thumbtack.school.elections.service.ServiceProposals;
 import net.thumbtack.school.elections.service.ServiceServer;
 import net.thumbtack.school.elections.service.ServiceVoter;
 
@@ -11,6 +12,7 @@ public class Server {
     private boolean running;
     private ServiceVoter serviceVoter = new ServiceVoter();
     private ServiceCandidate serviceCandidate = new ServiceCandidate();
+    private ServiceProposals serviceProposals = new ServiceProposals();
 
     public void startServer(String savedDataFileName){
         running = true;
@@ -40,5 +42,17 @@ public class Server {
 
     public String acceptAddCandidate(String requestJsonString){
         return serviceCandidate.acceptAddCandidate(requestJsonString);
+    }
+
+    public String deleteCandidate(String requestJsonString){
+        return serviceCandidate.deleteCandidate(requestJsonString);
+    }
+
+    public String addProposals(String requestJsonString){
+        return serviceProposals.addProposals(requestJsonString);
+    }
+
+    public String addProposalRating(String requestJsonString){
+        return serviceProposals.addProposalRating(requestJsonString);
     }
 }

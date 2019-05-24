@@ -1,15 +1,19 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.error.ErrorServiceCandidate;
-import net.thumbtack.school.elections.request.AcceptAddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.AddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.LogoutVoterDtoRequest;
-import net.thumbtack.school.elections.request.RestoreVoterDtoRequest;
+import net.thumbtack.school.elections.error.ErrorServiceProposals;
+import net.thumbtack.school.elections.request.AddProposalDtoRequest;
+import net.thumbtack.school.elections.request.AddProposalRatingDtoRequest;
+import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
+import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
+import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
+import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
+import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
 import net.thumbtack.school.elections.roles.Voter;
+import org.apache.commons.collections4.OrderedMap;
+import org.apache.commons.collections4.map.LinkedMap;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DataBase {
     private static DataBase instance;
@@ -21,9 +25,14 @@ public class DataBase {
     private DataBase(){}
 
     static private List<Voter> voters = new ArrayList<>();
+    static private Map<String, Map<String,Integer>> propsals;
 
     public static List<Voter> getVoters() {
         return voters;
+    }
+
+    public static Map<String, Map<String, Integer>> getPropsals() {
+        return propsals;
     }
 
     public static void clear() {
@@ -104,5 +113,39 @@ public class DataBase {
                 break;
             }
         return result;
+    }
+
+    static public ErroDataBase deleteCandidate(DeleteCandidateDtoRequest deleteCandidateDtoRequest) {
+        ErroDataBase result = ErroDataBase.OK;
+        for (Voter voter : voters)
+            if (deleteCandidateDtoRequest.getToken().equals(voter.getToken())){
+                if (!voter.isCandidate())
+                    result = ErroDataBase.NOT_CANDIDATE;
+                else
+                    voter.setCandidate(false);
+                break;
+            }
+        return result;
+    }
+
+    static public ErroDataBase addProposal(AddProposalDtoRequest addProposalDtoRequest) {
+        if (propsals == null)
+            propsals = new HashMap<>();
+        if (propsals.get(addProposalDtoRequest.getProposal()) == null){
+            propsals.put(addProposalDtoRequest.getProposal(), new HashMap<>());
+            propsals.get(addProposalDtoRequest.getProposal()).put(addProposalDtoRequest.getToken(), 5);
+            for (Voter voter : voters)
+                if (addProposalDtoRequest.getToken().equals(voter.getToken()))
+                    voter.addPorposal(addProposalDtoRequest.getProposal());
+            return ErroDataBase.OK;
+        }
+        else
+            return ErroDataBase.NOW_ADD_PROPOSAL;
+    }
+
+    static public ErroDataBase addProposalRating(AddProposalRatingDtoRequest addProposalRatingDtoRequest) {
+        propsals.get(addProposalRatingDtoRequest.getProposal()).
+                put(addProposalRatingDtoRequest.getToken(), addProposalRatingDtoRequest.getRatingProposal());
+        return ErroDataBase.OK;
     }
 }

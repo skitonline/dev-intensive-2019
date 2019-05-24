@@ -2,19 +2,21 @@ package net.thumbtack.school.elections.request;
 
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.error.ErrorServiceVoter;
+import net.thumbtack.school.elections.error.ErrorServiceProposals;
 import net.thumbtack.school.elections.roles.Voter;
 
-public class AcceptAddCandidateDtoRequest {
+import java.util.Set;
+
+public class AddProposalDtoRequest {
+    private String proposal;
     private String token;
-    private boolean requestAddCandidate;
 
     public String getToken() {
         return token;
     }
 
-    public boolean isRequestAddCandidate() {
-        return requestAddCandidate;
+    public String getProposal() {
+        return proposal;
     }
 
     public ErroDataBase validation(){

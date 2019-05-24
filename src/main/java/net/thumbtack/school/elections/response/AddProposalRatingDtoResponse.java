@@ -1,6 +1,6 @@
 package net.thumbtack.school.elections.response;
 
-public class AddCandidateDtoResponse {
+public class AddProposalRatingDtoResponse {
     private String error;
 
     public String getError() {

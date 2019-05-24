@@ -2,8 +2,8 @@ package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.dao.VoterDao;
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.request.LogoutVoterDtoRequest;
-import net.thumbtack.school.elections.request.RestoreVoterDtoRequest;
+import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
+import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.server.Server;
 

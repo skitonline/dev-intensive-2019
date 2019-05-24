@@ -5,9 +5,9 @@ import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
 import net.thumbtack.school.elections.roles.jsonobject.User;
-import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
-import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
-import net.thumbtack.school.elections.response.RestoreVoterDtoResponse;
+import net.thumbtack.school.elections.response.voter.LogoutVoterDtoResponse;
+import net.thumbtack.school.elections.response.voter.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.response.voter.RestoreVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.roles.jsonobject.Login;
 import net.thumbtack.school.elections.server.Server;
@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
 public class TestServiceVoter {
     Gson gson = new Gson();
     Server server = new Server();
-
 
     @Test
     public void registerVoter() {

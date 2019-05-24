@@ -6,12 +6,12 @@ import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.daoimpl.VoterDaoImpl;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.request.LogoutVoterDtoRequest;
-import net.thumbtack.school.elections.request.RegisterVoterDtoRequest;
-import net.thumbtack.school.elections.request.RestoreVoterDtoRequest;
-import net.thumbtack.school.elections.response.LogoutVoterDtoResponse;
-import net.thumbtack.school.elections.response.RegisterVoterDtoResponse;
-import net.thumbtack.school.elections.response.RestoreVoterDtoResponse;
+import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
+import net.thumbtack.school.elections.request.voter.RegisterVoterDtoRequest;
+import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
+import net.thumbtack.school.elections.response.voter.LogoutVoterDtoResponse;
+import net.thumbtack.school.elections.response.voter.RegisterVoterDtoResponse;
+import net.thumbtack.school.elections.response.voter.RestoreVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 
 public class ServiceVoter {

@@ -1,20 +1,22 @@
 package net.thumbtack.school.elections.roles;
 
+import com.sun.deploy.util.OrderedHashSet;
 import org.apache.commons.collections4.OrderedMap;
 import org.apache.commons.collections4.map.LinkedMap;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Voter{
     private String name, surname, patronymic;
     private String street, number, room;
     private String login, password;
-    private OrderedMap proposals;
+    private Set<String> proposals;
     private boolean candidate;
     private String token;
     private String tokenAddCandidate;
     private boolean requestAddCandidate;
+    private String proposal;
+    private int ratingProposal;
 
     public boolean getRequestAddCandidate() {
         return requestAddCandidate;
@@ -67,12 +69,6 @@ public class Voter{
 
     public String getRoom() {
         return room;
-    }
-
-    public void addProposal(String proposal, int rating){
-        if (proposals == null)
-            proposals = new LinkedMap();
-        proposals.put(proposal, rating);
     }
 
     public boolean isCandidate() {
@@ -137,6 +133,28 @@ public class Voter{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getProposal() {
+        return proposal;
+    }
+
+    public void setProposal(String proposal) {
+        this.proposal = proposal;
+    }
+
+    public int getRatingProposal() {
+        return ratingProposal;
+    }
+
+    public void setRatingProposal(int ratingProposal) {
+        this.ratingProposal = ratingProposal;
+    }
+
+    public void addPorposal(String proposal){
+        if (proposals == null)
+            proposals = new HashSet<>();
+        proposals.add(proposal);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.thumbtack.school.elections.request;
+package net.thumbtack.school.elections.request.candidate;
 
 import net.thumbtack.school.elections.error.ErrorServiceCandidate;
 import net.thumbtack.school.elections.roles.Voter;

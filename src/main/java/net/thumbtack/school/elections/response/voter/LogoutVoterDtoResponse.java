@@ -1,6 +1,6 @@
-package net.thumbtack.school.elections.response;
+package net.thumbtack.school.elections.response.voter;
 
-public class RestoreVoterDtoResponse {
+public class LogoutVoterDtoResponse {
     private String error;
 
     public String getError() {

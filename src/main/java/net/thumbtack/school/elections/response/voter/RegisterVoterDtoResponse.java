@@ -1,4 +1,4 @@
-package net.thumbtack.school.elections.response;
+package net.thumbtack.school.elections.response.voter;
 
 public class RegisterVoterDtoResponse {
     private String token;
