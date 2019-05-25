@@ -6,7 +6,8 @@ public class Voter{
     private String name, surname, patronymic;
     private String street, number, room;
     private String login, password;
-    private Set<String> proposals;
+    private List<String> proposals;
+    private List<Boolean> isMyProposals;
     private boolean candidate;
     private String token;
     private String tokenAddCandidate;
@@ -147,10 +148,21 @@ public class Voter{
         this.ratingProposal = ratingProposal;
     }
 
-    public void addPorposal(String proposal){
-        if (proposals == null)
-            proposals = new HashSet<>();
+    public void addPorposal(String proposal, boolean myProposal){
+        if (proposals == null){
+            proposals = new ArrayList<>();
+            isMyProposals = new ArrayList<>();
+        }
         proposals.add(proposal);
+        isMyProposals.add(myProposal);
+    }
+
+    public List<String> getProposals() {
+        return proposals;
+    }
+
+    public List<Boolean> getIsMyProposals() {
+        return isMyProposals;
     }
 
     @Override

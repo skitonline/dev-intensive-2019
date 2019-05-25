@@ -135,7 +135,7 @@ public class DataBase {
             propsals = new HashMap<>();
         for (Voter voter : voters)
             if (addProposalDtoRequest.getToken().equals(voter.getToken()))
-                voter.addPorposal(addProposalDtoRequest.getProposal());
+                voter.addPorposal(addProposalDtoRequest.getProposal(), true);
         if (propsals.get(addProposalDtoRequest.getProposal()) == null){
             propsals.put(addProposalDtoRequest.getProposal(), new HashMap<>());
             propsals.get(addProposalDtoRequest.getProposal()).put(addProposalDtoRequest.getToken(), 5);
