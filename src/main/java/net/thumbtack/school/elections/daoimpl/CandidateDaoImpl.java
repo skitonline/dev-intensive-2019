@@ -2,23 +2,22 @@ package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.dao.CandidateDao;
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
+import net.thumbtack.school.elections.request.VoterDtoRequest;
+import net.thumbtack.school.elections.server.Server;
 
 public class CandidateDaoImpl implements CandidateDao {
     @Override
-    public ErroDataBase addCandidate(AddCandidateDtoRequest addCandidateDtoRequest) {
-        return DataBase.addCandidate(addCandidateDtoRequest);
+    public ErroDataBase addCandidate(VoterDtoRequest voterDtoRequest) {
+        return Server.dataBase.addCandidate(voterDtoRequest);
     }
 
     @Override
-    public ErroDataBase acceptAddCandidate(AcceptAddCandidateDtoRequest acceptAddCandidateDtoRequest) {
-        return DataBase.acceptAddCandidate(acceptAddCandidateDtoRequest);
+    public ErroDataBase acceptAddCandidate(VoterDtoRequest voterDtoRequest) {
+        return Server.dataBase.acceptAddCandidate(voterDtoRequest);
     }
 
     @Override
-    public ErroDataBase deleteCandidate(DeleteCandidateDtoRequest deleteCandidateDtoRequest) {
-        return DataBase.deleteCandidate(deleteCandidateDtoRequest);
+    public ErroDataBase deleteCandidate(VoterDtoRequest voterDtoRequest) {
+        return Server.dataBase.deleteCandidate(voterDtoRequest);
     }
 }

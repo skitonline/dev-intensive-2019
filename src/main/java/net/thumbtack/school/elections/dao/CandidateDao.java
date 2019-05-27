@@ -1,12 +1,10 @@
 package net.thumbtack.school.elections.dao;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
+import net.thumbtack.school.elections.request.VoterDtoRequest;
 
 public interface CandidateDao {
-    ErroDataBase addCandidate(AddCandidateDtoRequest addCandidateDtoRequest);
-    ErroDataBase acceptAddCandidate(AcceptAddCandidateDtoRequest acceptAddCandidateDtoRequest);
-    ErroDataBase deleteCandidate(DeleteCandidateDtoRequest deleteCandidateDtoRequest);
+    ErroDataBase addCandidate(VoterDtoRequest voterDtoRequest);
+    ErroDataBase acceptAddCandidate(VoterDtoRequest voterDtoRequest);
+    ErroDataBase deleteCandidate(VoterDtoRequest voterDtoRequest);
 }

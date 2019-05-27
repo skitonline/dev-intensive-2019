@@ -2,12 +2,11 @@ package net.thumbtack.school.elections.roles;
 
 import java.util.*;
 
-public class Voter{
+public class Voter {
     private String name, surname, patronymic;
     private String street, number, room;
+    private Map<String, Boolean> program;
     private String login, password;
-    private List<String> proposals;
-    private List<Boolean> isMyProposals;
     private boolean candidate;
     private String token;
     private String tokenAddCandidate;
@@ -44,30 +43,6 @@ public class Voter{
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
     public boolean isCandidate() {
         return candidate;
     }
@@ -86,30 +61,6 @@ public class Voter{
 
     public void doNullToken(){
         token = null;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
     }
 
     public String getLogin() {
@@ -149,20 +100,66 @@ public class Voter{
     }
 
     public void addPorposal(String proposal, boolean myProposal){
-        if (proposals == null){
-            proposals = new ArrayList<>();
-            isMyProposals = new ArrayList<>();
+        if (getProgram() == null){
+            setProgram(new HashMap<>());
         }
-        proposals.add(proposal);
-        isMyProposals.add(myProposal);
+        getProgram().put(proposal, myProposal);
     }
 
-    public List<String> getProposals() {
-        return proposals;
+    public Map<String, Boolean> getProgram() {
+        return program;
     }
 
-    public List<Boolean> getIsMyProposals() {
-        return isMyProposals;
+    public void setProgram(Map<String, Boolean> program) {
+        this.program = program;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     @Override
@@ -170,11 +167,11 @@ public class Voter{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voter voter = (Voter) o;
-        return Objects.equals(name, voter.name) &&
-                Objects.equals(surname, voter.surname) &&
-                Objects.equals(patronymic, voter.patronymic) &&
-                Objects.equals(street, voter.street) &&
-                Objects.equals(number, voter.number) &&
-                Objects.equals(room, voter.room);
+        return Objects.equals(getName(), voter.getName()) &&
+                Objects.equals(getSurname(), voter.getSurname()) &&
+                Objects.equals(getPatronymic(), voter.getPatronymic()) &&
+                Objects.equals(getStreet(), voter.getStreet()) &&
+                Objects.equals(getNumber(), voter.getNumber()) &&
+                Objects.equals(getRoom(), voter.getRoom());
     }
 }

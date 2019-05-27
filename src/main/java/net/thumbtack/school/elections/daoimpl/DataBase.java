@@ -1,15 +1,11 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
-import net.thumbtack.school.elections.request.proposal.AddProposalDtoRequest;
-import net.thumbtack.school.elections.request.proposal.AddProposalRatingDtoRequest;
-import net.thumbtack.school.elections.request.proposal.RemoveProposalRatingDtoRequest;
-import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
-import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
-import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
+import net.thumbtack.school.elections.request.GetDtoRequest;
+import net.thumbtack.school.elections.request.VoterDtoRequest;
+import net.thumbtack.school.elections.response.get.GetCandidatesDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
+import net.thumbtack.school.elections.roles.VoterInformation;
 
 import java.util.*;
 
@@ -38,21 +34,21 @@ public class DataBase {
         propsals = new HashMap<>();
     }
 
-    static public ErroDataBase insert(Voter insertVoter) {
+    static public ErroDataBase insertVoter(VoterDtoRequest voterDtoRequest) {
         for (Voter voter : voters) {
-            if (insertVoter.equals(voter))
+            if (voterDtoRequest.equals(voter))
                 return ErroDataBase.DUPLICATE_VOTER;
-            if (insertVoter.getLogin().equals(voter.getLogin()))
+            if (voterDtoRequest.getLogin().equals(voter.getLogin()))
                 return ErroDataBase.DUPLICATE_LOGIN;
         }
-        insertVoter.generateToken();
-        voters.add(insertVoter);
+        voterDtoRequest.generateToken();
+        voters.add(voterDtoRequest);
         return ErroDataBase.OK;
     }
 
-    static public ErroDataBase logout(LogoutVoterDtoRequest login){
+    static public ErroDataBase logoutVoter(VoterDtoRequest voterDtoRequest){
         for (int i = 0; i < voters.size(); i++){
-            if (login.getLogin().equals(voters.get(i).getLogin())) {
+            if (voterDtoRequest.getLogin().equals(voters.get(i).getLogin())) {
                 if (voters.get(i).getToken() == null)
                     return ErroDataBase.NOW_LOGOUT;
                 else {
@@ -68,10 +64,10 @@ public class DataBase {
         return ErroDataBase.VOTER_NOT_FOUND;
     }
 
-    static public ErroDataBase restore(RestoreVoterDtoRequest user){
+    static public ErroDataBase restoreVoter(VoterDtoRequest voterDtoRequest){
         for (Voter voter : voters){
-            if (user.getLogin().equals(voter.getLogin()) &&
-                    user.getPassword().equals(voter.getPassword())) {
+            if (voterDtoRequest.getLogin().equals(voter.getLogin()) &&
+                    voterDtoRequest.getPassword().equals(voter.getPassword())) {
                 if (voter.getToken() == null) {
                     voter.generateToken();
                     return ErroDataBase.OK;
@@ -83,14 +79,14 @@ public class DataBase {
         return ErroDataBase.LOGIN_OR_PASSWORD;
     }
 
-    static public ErroDataBase addCandidate(AddCandidateDtoRequest addCandidateDtoRequest) {
+    static public ErroDataBase addCandidate(VoterDtoRequest voterDtoRequest) {
         ErroDataBase result = ErroDataBase.OK;
         for (Voter voter : voters){
-            if (addCandidateDtoRequest.getTokenAddCandidate().equals(voter.getToken())){
+            if (voterDtoRequest.getTokenAddCandidate().equals(voter.getToken())){
                 if (voter.isCandidate())
                     result = ErroDataBase.NOW_CANDIDATE;
                 else {
-                    if (addCandidateDtoRequest.getToken().equals(addCandidateDtoRequest.getTokenAddCandidate())) {
+                    if (voterDtoRequest.getToken().equals(voterDtoRequest.getTokenAddCandidate())) {
                         voter.setCandidate(true);
                     }
                     else {
@@ -104,10 +100,10 @@ public class DataBase {
         return result;
     }
 
-    static public ErroDataBase acceptAddCandidate(AcceptAddCandidateDtoRequest acceptAddCandidateDtoRequest) {
+    static public ErroDataBase acceptAddCandidate(VoterDtoRequest voterDtoRequest) {
         ErroDataBase result = ErroDataBase.OK;
         for (Voter voter : voters)
-            if (acceptAddCandidateDtoRequest.getToken().equals(voter.getToken())){
+            if (voterDtoRequest.getToken().equals(voter.getToken())){
                 if (!voter.getRequestAddCandidate())
                     result = ErroDataBase.NOT_ADD_CANDIDATE;
                 else
@@ -117,10 +113,10 @@ public class DataBase {
         return result;
     }
 
-    static public ErroDataBase deleteCandidate(DeleteCandidateDtoRequest deleteCandidateDtoRequest) {
+    static public ErroDataBase deleteCandidate(VoterDtoRequest voterDtoRequest) {
         ErroDataBase result = ErroDataBase.OK;
         for (Voter voter : voters)
-            if (deleteCandidateDtoRequest.getToken().equals(voter.getToken())){
+            if (voterDtoRequest.getToken().equals(voter.getToken())){
                 if (!voter.isCandidate())
                     result = ErroDataBase.NOT_CANDIDATE;
                 else
@@ -130,34 +126,70 @@ public class DataBase {
         return result;
     }
 
-    static public ErroDataBase addProposal(AddProposalDtoRequest addProposalDtoRequest) {
+    static public ErroDataBase addProposal(VoterDtoRequest voterDtoRequest) {
         if (propsals == null)
             propsals = new HashMap<>();
         for (Voter voter : voters)
-            if (addProposalDtoRequest.getToken().equals(voter.getToken()))
-                voter.addPorposal(addProposalDtoRequest.getProposal(), true);
-        if (propsals.get(addProposalDtoRequest.getProposal()) == null){
-            propsals.put(addProposalDtoRequest.getProposal(), new HashMap<>());
-            propsals.get(addProposalDtoRequest.getProposal()).put(addProposalDtoRequest.getToken(), 5);
+            if (voterDtoRequest.getToken().equals(voter.getToken()))
+                voter.addPorposal(voterDtoRequest.getProposal(), true);
+        if (propsals.get(voterDtoRequest.getProposal()) == null){
+            propsals.put(voterDtoRequest.getProposal(), new HashMap<>());
+            propsals.get(voterDtoRequest.getProposal()).put(voterDtoRequest.getToken(), 5);
             return ErroDataBase.OK;
         }
         else
             return ErroDataBase.NOW_ADD_PROPOSAL;
     }
 
-    static public ErroDataBase addProposalRating(AddProposalRatingDtoRequest addProposalRatingDtoRequest) {
-        propsals.get(addProposalRatingDtoRequest.getProposal()).
-                put(addProposalRatingDtoRequest.getToken(), addProposalRatingDtoRequest.getRatingProposal());
+    static public ErroDataBase addProposalRating(VoterDtoRequest voterDtoRequest) {
+        propsals.get(voterDtoRequest.getProposal()).
+                put(voterDtoRequest.getToken(), voterDtoRequest.getRatingProposal());
         return ErroDataBase.OK;
     }
 
 
-    static public ErroDataBase removeProposalRating
-            (RemoveProposalRatingDtoRequest removeProposalRatingDtoRequest) {
+    static public ErroDataBase removeProposalRating(VoterDtoRequest voterDtoRequest) {
         for(Map.Entry<String, Map<String,Integer>> item : DataBase.getPropsals().entrySet())
-            if (item.getKey().equals(removeProposalRatingDtoRequest.getProposal()))
-                if (item.getValue().remove(removeProposalRatingDtoRequest.getToken()) == null)
+            if (item.getKey().equals(voterDtoRequest.getProposal()))
+                if (item.getValue().remove(voterDtoRequest.getToken()) == null)
                     return ErroDataBase.PROPOSAL_NOT_FOUND;
         return ErroDataBase.OK;
+    }
+
+    static public ErroDataBase addInProgram(VoterDtoRequest voterDtoRequest) {
+        for (Voter voter : voters) {
+            if (voterDtoRequest.getToken().equals(voter.getToken())) {
+                if (voter.getProgram().get(voterDtoRequest.getProposal()) == null)
+                    voter.addPorposal(voterDtoRequest.getProposal(), false);
+                else
+                    return ErroDataBase.NOW_ADD_PROPOSAL;
+            }
+        }
+        return ErroDataBase.OK;
+    }
+
+    static public ErroDataBase removeFromProgram(VoterDtoRequest voterDtoRequest) {
+        for (Voter voter : voters) {
+            if (voterDtoRequest.getToken().equals(voter.getToken())) {
+                if (voter.getProgram().get(voterDtoRequest.getProposal()))
+                    return ErroDataBase.YOUR_PROPOSAL;
+                else
+                    voter.getProgram().remove(voterDtoRequest.getProposal());
+            }
+        }
+        return ErroDataBase.OK;
+    }
+
+    static public GetCandidatesDtoResponse getCandidates(GetDtoRequest getDtoRequest) {
+        GetCandidatesDtoResponse getCandidatesDtoResponse = new GetCandidatesDtoResponse();
+        for (Voter voter : voters)
+            if (voter.isCandidate()) {
+                VoterInformation candidate = new VoterInformation
+                        (voter.getName(), voter.getSurname(), voter.getPatronymic(),
+                                voter.getStreet(), voter.getNumber(), voter.getRoom());
+                candidate.setProgram(voter.getProgram().keySet());
+                getCandidatesDtoResponse.getCantidates().add(candidate);
+            }
+        return getCandidatesDtoResponse;
     }
 }

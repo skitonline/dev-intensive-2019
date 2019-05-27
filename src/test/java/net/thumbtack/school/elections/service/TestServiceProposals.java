@@ -29,13 +29,13 @@ public class TestServiceProposals {
         //пользователь подает предложение
         voter1.setProposal("very nice");
         stringVoter1 = gson.toJson(voter1);
-        String addProposal = server.addProposals(stringVoter1);
+        String addProposal = server.addProposal(stringVoter1);
         AddProposalDtoResponse addProposalDtoResponse1 =
                 gson.fromJson(addProposal, AddProposalDtoResponse.class);
         assertEquals(1, DataBase.getPropsals().size());
         assertEquals(ErroDataBase.OK.getErrorString(), addProposalDtoResponse1.getError());
         //подача предложения, которое уже есть в базе
-        String addProposa2 = server.addProposals(stringVoter1);
+        String addProposa2 = server.addProposal(stringVoter1);
         AddProposalDtoResponse addProposalDtoResponse2 =
                 gson.fromJson(addProposa2, AddProposalDtoResponse.class);
         assertEquals(1, DataBase.getPropsals().size());
@@ -55,7 +55,7 @@ public class TestServiceProposals {
         //пользователь подает предложение
         voter1.setProposal("very nice");
         stringVoter1 = gson.toJson(voter1);
-        String addProposal = server.addProposals(stringVoter1);
+        String addProposal = server.addProposal(stringVoter1);
         //регаем 2 ползьователя
         Voter voter2 = new Voter("Alexander", "NeEvseev", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -66,7 +66,7 @@ public class TestServiceProposals {
         //пользователь подает предложение
         voter2.setProposal("very very nice");
         stringVoter2 = gson.toJson(voter2);
-        String addProposa2 = server.addProposals(stringVoter2);
+        String addProposa2 = server.addProposal(stringVoter2);
         //2ой пользователь оценивает 1го
         voter2.setRatingProposal(2);
         voter2.setProposal("very nice");
@@ -109,7 +109,7 @@ public class TestServiceProposals {
         //пользователь подает предложение
         voter1.setProposal("very nice");
         stringVoter1 = gson.toJson(voter1);
-        String addProposal = server.addProposals(stringVoter1);
+        String addProposal = server.addProposal(stringVoter1);
         //регаем 2 ползьователя
         Voter voter2 = new Voter("Alexander", "NeEvseev", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -120,7 +120,7 @@ public class TestServiceProposals {
         //пользователь подает предложение
         voter2.setProposal("very very nice");
         stringVoter2 = gson.toJson(voter2);
-        String addProposa2 = server.addProposals(stringVoter2);
+        String addProposa2 = server.addProposal(stringVoter2);
         //2ой пользователь оценивает 1го
         voter2.setRatingProposal(2);
         voter2.setProposal("very nice");

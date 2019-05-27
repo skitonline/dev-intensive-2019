@@ -143,17 +143,17 @@ public class TestServiceVoter {
                 gson.fromJson(logout4, LogoutVoterDtoResponse.class);
         assertEquals(ErroDataBase.NOW_LOGOUT.getErrorString(), logoutVoterDtoResponse4.getError());
         String stringRestore1 = gson.toJson(new User("skitonline1", "123456"));
-        String restore1 = server.restoreAccess(stringRestore1);
+        String restore1 = server.restoreVoter(stringRestore1);
         RestoreVoterDtoResponse restoreVoterDtoResponse1 =
                 gson.fromJson(restore1, RestoreVoterDtoResponse.class);
         assertEquals(ErroDataBase.OK.getErrorString(), restoreVoterDtoResponse1.getError());
         String stringRestore2 = gson.toJson(new User("buyniy", "123456"));
-        String restore2 = server.restoreAccess(stringRestore2);
+        String restore2 = server.restoreVoter(stringRestore2);
         RestoreVoterDtoResponse restoreVoterDtoResponse2 =
                 gson.fromJson(restore2, RestoreVoterDtoResponse.class);
         assertEquals(ErroDataBase.LOGIN_OR_PASSWORD.getErrorString(), restoreVoterDtoResponse2.getError());
         String stringRestore3 = gson.toJson(new User("skitonline1", "123456"));
-        String restore3 = server.restoreAccess(stringRestore3);
+        String restore3 = server.restoreVoter(stringRestore3);
         RestoreVoterDtoResponse restoreVoterDtoResponse3 =
                 gson.fromJson(restore3, RestoreVoterDtoResponse.class);
         assertEquals(ErroDataBase.NOW_ACTIVED.getErrorString(), restoreVoterDtoResponse3.getError());

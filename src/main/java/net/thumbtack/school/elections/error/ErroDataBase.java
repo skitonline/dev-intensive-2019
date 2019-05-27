@@ -13,7 +13,8 @@ public enum ErroDataBase {
     NOT_ADD_CANDIDATE("Вас не выдвигали в кандидаты"),
     NOT_CANDIDATE("Пользователь не является кандидатом"),
     NOW_ADD_PROPOSAL("Предложение уже добавлено"),
-    PROPOSAL_NOT_FOUND("Предложение не найдено");
+    PROPOSAL_NOT_FOUND("Предложение не найдено"),
+    YOUR_PROPOSAL("Нельзя удалить свое предлжение из программы");
 
     public String getErrorString() {
         return errorString;

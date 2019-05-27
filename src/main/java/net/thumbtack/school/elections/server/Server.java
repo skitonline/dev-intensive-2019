@@ -1,10 +1,7 @@
 package net.thumbtack.school.elections.server;
 
 import net.thumbtack.school.elections.daoimpl.DataBase;
-import net.thumbtack.school.elections.service.ServiceCandidate;
-import net.thumbtack.school.elections.service.ServiceProposals;
-import net.thumbtack.school.elections.service.ServiceServer;
-import net.thumbtack.school.elections.service.ServiceVoter;
+import net.thumbtack.school.elections.service.*;
 
 public class Server {
     static public DataBase dataBase = DataBase.getInstance();
@@ -13,6 +10,8 @@ public class Server {
     private ServiceVoter serviceVoter = new ServiceVoter();
     private ServiceCandidate serviceCandidate = new ServiceCandidate();
     private ServiceProposals serviceProposals = new ServiceProposals();
+    private ServiceProgram serviceProgram = new ServiceProgram();
+    private ServiceGet serviceGet = new ServiceGet();
 
     public void startServer(String savedDataFileName){
         running = true;
@@ -32,8 +31,8 @@ public class Server {
         return serviceVoter.logoutVoter(requestJsonString);
     }
 
-    public String restoreAccess(String requestJsonString){
-        return serviceVoter.restoreAccess(requestJsonString);
+    public String restoreVoter(String requestJsonString){
+        return serviceVoter.restoreVoter(requestJsonString);
     }
 
     public String addCandidate(String requestJsonString){
@@ -48,8 +47,8 @@ public class Server {
         return serviceCandidate.deleteCandidate(requestJsonString);
     }
 
-    public String addProposals(String requestJsonString){
-        return serviceProposals.addProposals(requestJsonString);
+    public String addProposal(String requestJsonString){
+        return serviceProposals.addProposal(requestJsonString);
     }
 
     public String addProposalRating(String requestJsonString){
@@ -58,5 +57,17 @@ public class Server {
 
     public String removeProposalRating(String requestJsonString){
         return serviceProposals.removeProposalRating(requestJsonString);
+    }
+
+    public String addInProgram(String requestJsonString){
+        return serviceProgram.addInProgram(requestJsonString);
+    }
+
+    public String removeFromProgram(String requestJsonString){
+        return serviceProgram.removeFromProgram(requestJsonString);
+    }
+
+    public String getCandidates(String requestJsonString){
+        return serviceGet.getCandidates(requestJsonString);
     }
 }

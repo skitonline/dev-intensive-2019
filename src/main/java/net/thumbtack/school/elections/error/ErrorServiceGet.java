@@ -1,10 +1,8 @@
 package net.thumbtack.school.elections.error;
 
-public enum ErrorServiceCandidate {
+public enum ErrorServiceGet {
     PARSING("Не удалось распарсить строку"),
     OK("Операция успешна"),
-    WHO_ADD_NOT_FOUND("Выдвигающий кандидата не найден или покинул сервер"),
-    WHOM_ADD_NOT_FOUND("Выдвигаемый кандидат не найден или покинул сервер"),
     VOTER_NOT_FOUND("Пользователь не найден");
 
     public String getErrorString() {
@@ -13,7 +11,7 @@ public enum ErrorServiceCandidate {
 
     private String errorString;
 
-    ErrorServiceCandidate(String errorString){
+    ErrorServiceGet(String errorString){
         this.errorString = errorString;
     }
 }

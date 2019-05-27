@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import net.thumbtack.school.elections.daoimpl.CandidateDaoImpl;
 import net.thumbtack.school.elections.error.ErrorServiceCandidate;
-import net.thumbtack.school.elections.request.candidate.AcceptAddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.AddCandidateDtoRequest;
-import net.thumbtack.school.elections.request.candidate.DeleteCandidateDtoRequest;
+import net.thumbtack.school.elections.request.VoterDtoRequest;
 import net.thumbtack.school.elections.response.candidate.AcceptAddCandidateDtoResponse;
 import net.thumbtack.school.elections.response.candidate.AddCandidateDtoResponse;
 import net.thumbtack.school.elections.response.candidate.DeleteCandidateDtoResponse;
@@ -16,32 +14,33 @@ public class ServiceCandidate {
 
     public String addCandidate(String requestJsonString){
         Gson gson = new Gson();
-        AddCandidateDtoRequest addCandidateDtoRequest;
+        VoterDtoRequest voterDtoRequest;
         AddCandidateDtoResponse addCandidateDtoResponse = new AddCandidateDtoResponse();
         try {
-            addCandidateDtoRequest = gson.fromJson(requestJsonString, AddCandidateDtoRequest.class);
+            voterDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             addCandidateDtoResponse.setError(ErrorServiceCandidate.PARSING.getErrorString());
             return gson.toJson(addCandidateDtoResponse);
         }
-        addCandidateDtoResponse.setError(addCandidateDtoRequest.validation().getErrorString());
+        addCandidateDtoResponse.setError(voterDtoRequest.validationAddCantidate().getErrorString());
         if (addCandidateDtoResponse.getError().equals(ErrorServiceCandidate.OK.getErrorString())){
-            addCandidateDtoResponse.setError(candidateDao.addCandidate(addCandidateDtoRequest).getErrorString());
+            addCandidateDtoResponse.setError(candidateDao.addCandidate(voterDtoRequest).getErrorString());
         }
         return gson.toJson(addCandidateDtoResponse);
     }
 
     public String acceptAddCandidate(String requestJsonString){
         Gson gson = new Gson();
-        AcceptAddCandidateDtoRequest acceptAddCandidateDtoRequest;
+        VoterDtoRequest acceptAddCandidateDtoRequest;
         AcceptAddCandidateDtoResponse acceptAddCandidateDtoResponse = new AcceptAddCandidateDtoResponse();
         try {
-            acceptAddCandidateDtoRequest = gson.fromJson(requestJsonString, AcceptAddCandidateDtoRequest.class);
+            acceptAddCandidateDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             acceptAddCandidateDtoResponse.setError(ErrorServiceCandidate.PARSING.getErrorString());
             return gson.toJson(acceptAddCandidateDtoResponse);
         }
-        acceptAddCandidateDtoResponse.setError(acceptAddCandidateDtoRequest.validation().getErrorString());
+        acceptAddCandidateDtoResponse.setError(acceptAddCandidateDtoRequest.
+                validationAcceptAddCandidate().getErrorString());
         if (acceptAddCandidateDtoResponse.getError().equals(ErrorServiceCandidate.OK.getErrorString())){
             acceptAddCandidateDtoResponse.setError
                     (candidateDao.acceptAddCandidate(acceptAddCandidateDtoRequest).getErrorString());
@@ -51,18 +50,19 @@ public class ServiceCandidate {
 
     public String deleteCandidate(String requestJsonString){
         Gson gson = new Gson();
-        DeleteCandidateDtoRequest deleteCandidateDtoRequest;
+        VoterDtoRequest voterDtoRequest;
         DeleteCandidateDtoResponse deleteCandidateDtoResponse = new DeleteCandidateDtoResponse();
         try {
-            deleteCandidateDtoRequest = gson.fromJson(requestJsonString, DeleteCandidateDtoRequest.class);
+            voterDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             deleteCandidateDtoResponse.setError(ErrorServiceCandidate.PARSING.getErrorString());
             return gson.toJson(deleteCandidateDtoResponse);
         }
-        deleteCandidateDtoResponse.setError(deleteCandidateDtoRequest.validation().getErrorString());
+        deleteCandidateDtoResponse.setError(voterDtoRequest.
+                validationDeleteCandidate().getErrorString());
         if (deleteCandidateDtoResponse.getError().equals(ErrorServiceCandidate.OK.getErrorString())){
             deleteCandidateDtoResponse.setError
-                    (candidateDao.deleteCandidate(deleteCandidateDtoRequest).getErrorString());
+                    (candidateDao.deleteCandidate(voterDtoRequest).getErrorString());
         }
         return gson.toJson(deleteCandidateDtoResponse);
     }

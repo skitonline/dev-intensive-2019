@@ -6,32 +6,27 @@ import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.daoimpl.VoterDaoImpl;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.request.voter.LogoutVoterDtoRequest;
-import net.thumbtack.school.elections.request.voter.RegisterVoterDtoRequest;
-import net.thumbtack.school.elections.request.voter.RestoreVoterDtoRequest;
+import net.thumbtack.school.elections.request.VoterDtoRequest;
 import net.thumbtack.school.elections.response.voter.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.voter.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.response.voter.RestoreVoterDtoResponse;
-import net.thumbtack.school.elections.roles.Voter;
 
 public class ServiceVoter {
     private VoterDaoImpl voterDao = new VoterDaoImpl();
 
     public String registerVoter(String requestJsonString){
         Gson gson = new Gson();
-        RegisterVoterDtoRequest registerVoterDtoRequest;
+        VoterDtoRequest voterDtoRequest;
         RegisterVoterDtoResponse registerVoterDtoResponse = new RegisterVoterDtoResponse();
         try {
-            registerVoterDtoRequest = gson.fromJson(requestJsonString, RegisterVoterDtoRequest.class);
+            voterDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             registerVoterDtoResponse.setError(ErrorServiceVoter.PARSING.getErrorString());
             return gson.toJson(registerVoterDtoResponse);
         }
-        registerVoterDtoResponse.setError(registerVoterDtoRequest.validation().getErrorString());
+        registerVoterDtoResponse.setError(voterDtoRequest.validationRegister().getErrorString());
         if (registerVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
-            String jsonVoter = gson.toJson(registerVoterDtoRequest);
-            Voter insertVoter = gson.fromJson(jsonVoter, Voter.class);
-            registerVoterDtoResponse.setError(voterDao.insert(insertVoter).getErrorString());
+            registerVoterDtoResponse.setError(voterDao.insertVoter(voterDtoRequest).getErrorString());
             if (registerVoterDtoResponse.getError().equals(ErroDataBase.OK.toString()))
                 registerVoterDtoResponse.setToken(
                         DataBase.getVoters().get(DataBase.getVoters().size() - 1).getToken());
@@ -41,34 +36,34 @@ public class ServiceVoter {
 
     public String logoutVoter(String requestJsonString){
         Gson gson = new Gson();
-        LogoutVoterDtoRequest logoutVoterDtoRequest;
+        VoterDtoRequest voterDtoRequest;
         LogoutVoterDtoResponse logoutVoterDtoResponse = new LogoutVoterDtoResponse();
         try {
-            logoutVoterDtoRequest = gson.fromJson(requestJsonString, LogoutVoterDtoRequest.class);
+            voterDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             logoutVoterDtoResponse.setError(ErrorServiceVoter.PARSING.getErrorString());
             return gson.toJson(logoutVoterDtoResponse);
         }
-        logoutVoterDtoResponse.setError(logoutVoterDtoRequest.validation().getErrorString());
+        logoutVoterDtoResponse.setError(voterDtoRequest.validationLogout().getErrorString());
         if (logoutVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
-            logoutVoterDtoResponse.setError(voterDao.logout(logoutVoterDtoRequest).getErrorString());
+            logoutVoterDtoResponse.setError(voterDao.logoutVoter(voterDtoRequest).getErrorString());
         }
         return gson.toJson(logoutVoterDtoResponse);
     }
 
-    public String restoreAccess(String requestJsonString){
+    public String restoreVoter(String requestJsonString){
         Gson gson = new Gson();
-        RestoreVoterDtoRequest restoreVoterDtoRequest;
+        VoterDtoRequest voterDtoRequest;
         RestoreVoterDtoResponse restoreVoterDtoResponse = new RestoreVoterDtoResponse();
         try {
-            restoreVoterDtoRequest = gson.fromJson(requestJsonString, RestoreVoterDtoRequest.class);
+            voterDtoRequest = gson.fromJson(requestJsonString, VoterDtoRequest.class);
         } catch (JsonParseException e){
             restoreVoterDtoResponse.setError(ErrorServiceVoter.PARSING.getErrorString());
             return gson.toJson(restoreVoterDtoResponse);
         }
-        restoreVoterDtoResponse.setError(restoreVoterDtoRequest.validation().getErrorString());
+        restoreVoterDtoResponse.setError(voterDtoRequest.validationRestore().getErrorString());
         if (restoreVoterDtoResponse.getError().equals(ErrorServiceVoter.OK.getErrorString())){
-            restoreVoterDtoResponse.setError(voterDao.restore(restoreVoterDtoRequest).getErrorString());
+            restoreVoterDtoResponse.setError(voterDao.restoreVoter(voterDtoRequest).getErrorString());
         }
         return gson.toJson(restoreVoterDtoResponse);
     }
