@@ -6,6 +6,7 @@ import net.thumbtack.school.elections.request.GetDtoRequest;
 import net.thumbtack.school.elections.request.VoterDtoRequest;
 import net.thumbtack.school.elections.response.get.GetCandidatesDtoResponse;
 import net.thumbtack.school.elections.response.get.GetProposalsRatingDtoResponse;
+import net.thumbtack.school.elections.response.get.GetProposalsVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.roles.VoterInformation;
 
@@ -22,6 +23,7 @@ public class DataBase {
 
     static private List<Voter> voters = new ArrayList<>();
     static private Map<String, Map<String,Integer>> propsals;
+    static private Map<String, Integer> election = new HashMap<>();
 
     public static List<Voter> getVoters() {
         return voters;
@@ -33,6 +35,14 @@ public class DataBase {
 
     public static void setPropsals(Map<String, Map<String, Integer>> propsals) {
         DataBase.propsals = propsals;
+    }
+
+    public static Map<String, Integer> getElection() {
+        return election;
+    }
+
+    public static void setElection(Map<String, Integer> election) {
+        DataBase.election = election;
     }
 
     public static void clear() {
@@ -88,11 +98,11 @@ public class DataBase {
     static public ErroDataBase addCandidate(VoterDtoRequest voterDtoRequest) {
         ErroDataBase result = ErroDataBase.OK;
         for (Voter voter : voters){
-            if (voterDtoRequest.getTokenAddCandidate().equals(voter.getToken())){
+            if (voterDtoRequest.getTokenActionCandidate().equals(voter.getToken())){
                 if (voter.isCandidate())
                     result = ErroDataBase.NOW_CANDIDATE;
                 else {
-                    if (voterDtoRequest.getToken().equals(voterDtoRequest.getTokenAddCandidate())) {
+                    if (voterDtoRequest.getToken().equals(voterDtoRequest.getTokenActionCandidate())) {
                         voter.setCandidate(true);
                     }
                     else {
@@ -204,20 +214,57 @@ public class DataBase {
         GetProposalsRatingDtoResponse getProposalsRatingDtoResponse =
                 new GetProposalsRatingDtoResponse();
         for(Map.Entry<String, Map<String, Integer>> el : propsals.entrySet()){
-            Integer[] rating = (Integer[]) el.getValue().values().toArray();
+            Collection<Integer> rating = el.getValue().values();
             int sum = 0;
-            for (int i = 0; i < rating.length; i++)
-                sum += rating[i];
-            getProposalsRatingDtoResponse.getRatings().put(el.getKey(), sum / (double)rating.length);
+            for (int item : rating)
+                sum += item;
+            getProposalsRatingDtoResponse.getRatings().put(el.getKey(), sum / (double)rating.size());
         }
-        List list = new ArrayList(getProposalsRatingDtoResponse.getRatings().entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
-                return a.getValue() - b.getValue();
-            }
-        });
+        getProposalsRatingDtoResponse.sortByValue();
         getProposalsRatingDtoResponse.setError(ErrorServiceGet.OK.getErrorString());
         return getProposalsRatingDtoResponse;
+    }
+
+    static public GetProposalsVoterDtoResponse getProposalsVoter(GetDtoRequest getDtoRequest) {
+        GetProposalsVoterDtoResponse getProposalsVoterDtoResponse =
+                new GetProposalsVoterDtoResponse();
+        for (Voter voter : voters)
+            if (getDtoRequest.getTokenActionCandidate().equals(voter.getToken())){
+                for(Map.Entry<String, Boolean> el : voter.getProgram().entrySet()){
+                    if (el.getValue())
+                        getProposalsVoterDtoResponse.getProposals().add(el.getKey());
+                }
+            }
+        getProposalsVoterDtoResponse.setError(ErrorServiceGet.OK.getErrorString());
+        return getProposalsVoterDtoResponse;
+    }
+
+    static public void startElections() {
+        election = new HashMap<>();
+        for (Voter voter : voters)
+            if (voter.isCandidate() && voter.getProgram() != null && !voter.getProgram().isEmpty())
+                election.put(voter.getToken(), 0);
+        election.put(null, 0);
+    }
+
+    static public ErroDataBase vote(VoterDtoRequest voterDtoRequest) {
+        for (Voter voter : voters)
+            if (voterDtoRequest.getToken().equals(voter.getToken()))
+                voter.setVoted(true);
+        int rating = election.get(voterDtoRequest.getTokenActionCandidate());
+        election.put(voterDtoRequest.getTokenActionCandidate(), rating + 1);
+        return ErroDataBase.OK;
+    }
+
+    static public String resultElections() {
+        String result = null; int maxValue = 0;
+        for(Map.Entry<String, Integer> el : election.entrySet())
+            if (el.getValue() > maxValue){
+                result = el.getKey();
+                maxValue = el.getValue();
+            }
+        if (result == null)
+            result = "Выборы не состоялись";
+        return result;
     }
 }

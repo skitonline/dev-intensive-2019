@@ -1,11 +1,20 @@
 package net.thumbtack.school.elections.service;
 
+import java.io.File;
+
 public class ServiceServer {
     public void startServer(String savedDataFileName){
-        //логика запуска
+
     }
 
     public void stopServer(String saveDataFileName){
-        //логика остановки
+        /*try(BufferedWriter bw = new BufferedWriter(new FileWriter(saveDataFileName))) {
+            bw.write(server.getState().toString());
+            server.setState(new StringBuilder());
+            server.setName("");
+        } catch(IOException e){
+            e.getStackTrace();
+        }
+*/
     }
 }

@@ -9,10 +9,19 @@ public class Voter {
     private String login, password;
     private boolean candidate;
     private String token;
-    private String tokenAddCandidate;
+    private String tokenActionCandidate;
     private boolean requestAddCandidate;
     private String proposal;
     private int ratingProposal;
+    private boolean voted;
+
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
 
     public boolean getRequestAddCandidate() {
         return requestAddCandidate;
@@ -22,12 +31,12 @@ public class Voter {
         this.requestAddCandidate = requestAddCandidate;
     }
 
-    public String getTokenAddCandidate() {
-        return tokenAddCandidate;
+    public String getTokenActionCandidate() {
+        return tokenActionCandidate;
     }
 
-    public void setTokenAddCandidate(String tokenAddCandidate) {
-        this.tokenAddCandidate = tokenAddCandidate;
+    public void setTokenActionCandidate(String tokenActionCandidate) {
+        this.tokenActionCandidate = tokenActionCandidate;
     }
 
     public Voter(String name, String surname, String patronymic,

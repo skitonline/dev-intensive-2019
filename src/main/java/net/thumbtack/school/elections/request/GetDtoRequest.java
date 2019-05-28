@@ -6,6 +6,11 @@ import net.thumbtack.school.elections.roles.Voter;
 
 public class GetDtoRequest {
     private String token;
+    private String tokenActionCandidate;
+
+    public String getTokenActionCandidate() {
+        return tokenActionCandidate;
+    }
 
     public String getToken() {
         return token;
@@ -28,6 +33,10 @@ public class GetDtoRequest {
     }
 
     public ErrorServiceGet validationGetProposalsRating(){
+        return validationGetCandidates();
+    }
+
+    public ErrorServiceGet validationGetProposalsCandidate() {
         return validationGetCandidates();
     }
 }

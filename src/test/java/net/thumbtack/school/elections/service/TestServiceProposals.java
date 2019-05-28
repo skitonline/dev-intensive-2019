@@ -19,6 +19,7 @@ public class TestServiceProposals {
     @Test
     public void addProposals() {
         DataBase.clear();
+        Server.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -45,6 +46,7 @@ public class TestServiceProposals {
     @Test
     public void addProposalRating() {
         DataBase.clear();
+        Server.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -99,6 +101,7 @@ public class TestServiceProposals {
     @Test
     public void removeProposalRating() {
         DataBase.clear();
+        Server.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",

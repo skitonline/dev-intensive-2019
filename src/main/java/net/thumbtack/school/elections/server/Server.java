@@ -5,21 +5,20 @@ import net.thumbtack.school.elections.service.*;
 
 public class Server {
     static public DataBase dataBase = DataBase.getInstance();
+    static public boolean startElections = false;
     private ServiceServer serviceServer = new ServiceServer();
-    private boolean running;
     private ServiceVoter serviceVoter = new ServiceVoter();
     private ServiceCandidate serviceCandidate = new ServiceCandidate();
     private ServiceProposals serviceProposals = new ServiceProposals();
     private ServiceProgram serviceProgram = new ServiceProgram();
     private ServiceGet serviceGet = new ServiceGet();
+    private ServiceElections serviceElections = new ServiceElections();
 
     public void startServer(String savedDataFileName){
-        running = true;
         serviceServer.startServer(savedDataFileName);
     }
 
     public void stopServer(String saveDataFileName){
-        running = false;
         serviceServer.stopServer(saveDataFileName);
     }
 
@@ -73,5 +72,24 @@ public class Server {
 
     public String getProposalsRating(String requestJsonString){
         return serviceGet.getProposalsRating(requestJsonString);
+    }
+
+    public String getProposalsVoter(String requestJsonString){
+        return serviceGet.getProposalsVoter(requestJsonString);
+    }
+
+    public void startElections(){
+        if (!startElections) {
+            startElections = true;
+            dataBase.startElections();
+        }
+    }
+
+    public String vote(String requestJsonString){
+        return serviceElections.vote(requestJsonString);
+    }
+
+    public String resultElections(){
+        return dataBase.resultElections();
     }
 }

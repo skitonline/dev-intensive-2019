@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceVoter;
-import net.thumbtack.school.elections.roles.jsonobject.User;
 import net.thumbtack.school.elections.response.voter.LogoutVoterDtoResponse;
 import net.thumbtack.school.elections.response.voter.RegisterVoterDtoResponse;
 import net.thumbtack.school.elections.response.voter.RestoreVoterDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
-import net.thumbtack.school.elections.roles.jsonobject.Login;
 import net.thumbtack.school.elections.server.Server;
 import org.junit.Test;
 
@@ -22,6 +20,7 @@ public class TestServiceVoter {
     @Test
     public void registerVoter() {
         DataBase.clear();
+        Server.startElections = false;
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
                 "skitonline1", "123456");
@@ -116,43 +115,64 @@ public class TestServiceVoter {
     @Test
     public void logoutAndRestoreVoter(){
         Server.dataBase.clear();
+        Server.startElections = false;
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
                 "skitonline1", "123456");
         String stringVoter1 = gson.toJson(voter1);
         String rigister1 = server.registerVoter(stringVoter1);
-
-        String stringLogout1 = gson.toJson(new Login("sk"));
+        String stringLogout1 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "sk", "123456"));
+        //короткий логин
         String logout1 = server.logoutVoter(stringLogout1);
         LogoutVoterDtoResponse logoutVoterDtoResponse1 =
                 gson.fromJson(logout1, LogoutVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.LOGIN_LENGTH.getErrorString(), logoutVoterDtoResponse1.getError());
-        String stringLogout2 = gson.toJson(new Login("netakogo"));
+        String stringLogout2 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "net takogo", "123456"));
+        //несуществующий логин
         String logout2 = server.logoutVoter(stringLogout2);
         LogoutVoterDtoResponse logoutVoterDtoResponse2 =
                 gson.fromJson(logout2, LogoutVoterDtoResponse.class);
         assertEquals(ErroDataBase.VOTER_NOT_FOUND.getErrorString(), logoutVoterDtoResponse2.getError());
-        String stringLogout3 = gson.toJson(new Login("skitonline1"));
+        String stringLogout3 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456"));
+        //успешный логаут
         String logout3 = server.logoutVoter(stringLogout3);
         LogoutVoterDtoResponse logoutVoterDtoResponse3 =
                 gson.fromJson(logout3, LogoutVoterDtoResponse.class);
         assertEquals(ErroDataBase.OK.getErrorString(), logoutVoterDtoResponse3.getError());
-        String stringLogout4 = gson.toJson(new Login("skitonline1"));
+        String stringLogout4 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456"));
+        //повторый логаут
         String logout4 = server.logoutVoter(stringLogout4);
         LogoutVoterDtoResponse logoutVoterDtoResponse4 =
                 gson.fromJson(logout4, LogoutVoterDtoResponse.class);
         assertEquals(ErroDataBase.NOW_LOGOUT.getErrorString(), logoutVoterDtoResponse4.getError());
-        String stringRestore1 = gson.toJson(new User("skitonline1", "123456"));
+        String stringRestore1 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456"));
+        //успешное восстановление
         String restore1 = server.restoreVoter(stringRestore1);
         RestoreVoterDtoResponse restoreVoterDtoResponse1 =
                 gson.fromJson(restore1, RestoreVoterDtoResponse.class);
         assertEquals(ErroDataBase.OK.getErrorString(), restoreVoterDtoResponse1.getError());
-        String stringRestore2 = gson.toJson(new User("buyniy", "123456"));
+        String stringRestore2 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "buyniy", "123456"));
+        //неверный логин или пароль
         String restore2 = server.restoreVoter(stringRestore2);
         RestoreVoterDtoResponse restoreVoterDtoResponse2 =
                 gson.fromJson(restore2, RestoreVoterDtoResponse.class);
         assertEquals(ErroDataBase.LOGIN_OR_PASSWORD.getErrorString(), restoreVoterDtoResponse2.getError());
-        String stringRestore3 = gson.toJson(new User("skitonline1", "123456"));
+        String stringRestore3 = gson.toJson(new Voter("Petya", "Pupkin", "",
+                "Zarubina", "9", "10",
+                "skitonline1", "123456"));
+        //уже восстановленный акк
         String restore3 = server.restoreVoter(stringRestore3);
         RestoreVoterDtoResponse restoreVoterDtoResponse3 =
                 gson.fromJson(restore3, RestoreVoterDtoResponse.class);

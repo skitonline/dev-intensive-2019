@@ -6,6 +6,7 @@ import net.thumbtack.school.elections.daoimpl.GetDaoImpl;
 import net.thumbtack.school.elections.error.ErrorServiceGet;
 import net.thumbtack.school.elections.request.GetDtoRequest;
 import net.thumbtack.school.elections.response.get.GetCandidatesDtoResponse;
+import net.thumbtack.school.elections.response.get.GetProposalsVoterDtoResponse;
 import net.thumbtack.school.elections.response.get.GetProposalsRatingDtoResponse;
 
 public class ServiceGet {
@@ -43,5 +44,23 @@ public class ServiceGet {
             getProposalsRatingDtoResponse = getDao.getProposalsRating(getDtoRequest);
         }
         return gson.toJson(getProposalsRatingDtoResponse);
+    }
+
+    public String getProposalsVoter(String requestJsonString){
+        Gson gson = new Gson();
+        GetDtoRequest getDtoRequest;
+        GetProposalsVoterDtoResponse getProposalsCandidateDtoResponse =
+                new GetProposalsVoterDtoResponse();
+        try {
+            getDtoRequest = gson.fromJson(requestJsonString, GetDtoRequest.class);
+        } catch (JsonParseException e){
+            getProposalsCandidateDtoResponse.setError(ErrorServiceGet.PARSING.getErrorString());
+            return gson.toJson(getProposalsCandidateDtoResponse);
+        }
+        getProposalsCandidateDtoResponse.setError(getDtoRequest.validationGetProposalsCandidate().getErrorString());
+        if (getProposalsCandidateDtoResponse.getError().equals(ErrorServiceGet.OK.getErrorString())){
+            getProposalsCandidateDtoResponse = getDao.getProposalsVoter(getDtoRequest);
+        }
+        return gson.toJson(getProposalsCandidateDtoResponse);
     }
 }

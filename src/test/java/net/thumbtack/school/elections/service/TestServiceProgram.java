@@ -22,10 +22,12 @@ public class TestServiceProgram {
     @Test
     public void addInProgram() {
         DataBase.clear();
+        Server.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
                 "skitonline1", "123456");
+        voter1.setCandidate(true);
         String stringVoter1 = gson.toJson(voter1);
         String rigister1 = server.registerVoter(stringVoter1);
         voter1 = DataBase.getVoters().get(0);
@@ -74,10 +76,12 @@ public class TestServiceProgram {
     @Test
     public void removeFromProgram() {
         DataBase.clear();
+        Server.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
                 "skitonline1", "123456");
+        voter1.setCandidate(true);
         String stringVoter1 = gson.toJson(voter1);
         String rigister1 = server.registerVoter(stringVoter1);
         voter1 = DataBase.getVoters().get(0);

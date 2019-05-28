@@ -34,7 +34,7 @@ public class TestServiceCandidate {
         stringVoter2 = gson.toJson(DataBase.getVoters().get(1));
         //Успешное выдвижение voter1 (сам себя)
         voter1.setToken(Server.dataBase.getVoters().get(0).getToken());
-        voter1.setTokenAddCandidate(Server.dataBase.getVoters().get(0).getToken());
+        voter1.setTokenActionCandidate(Server.dataBase.getVoters().get(0).getToken());
         stringVoter1 = gson.toJson(voter1);
         String addCandidate1 = server.addCandidate(stringVoter1);
         AddCandidateDtoResponse addCandidateDtoResponse1 =
@@ -53,7 +53,7 @@ public class TestServiceCandidate {
                 acceptAddCandidateDtoResponse1.getError());
         assertTrue(DataBase.getVoters().get(0).isCandidate());
         //voter1 выдвигает voter2 c подтверждением
-        voter1.setTokenAddCandidate(Server.dataBase.getVoters().get(1).getToken());
+        voter1.setTokenActionCandidate(Server.dataBase.getVoters().get(1).getToken());
         stringVoter1 = gson.toJson(voter1);
         String addCandidate3 = server.addCandidate(stringVoter1);
         AddCandidateDtoResponse addCandidateDtoResponse3 =
