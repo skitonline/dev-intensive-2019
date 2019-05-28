@@ -8,11 +8,11 @@ import net.thumbtack.school.elections.server.Server;
 public class ProgramDaoImpl implements ProgramDao {
     @Override
     public ErroDataBase addInProgram(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.addInProgram(voterDtoRequest);
+        return DataBase.addInProgram(voterDtoRequest);
     }
 
     @Override
     public ErroDataBase removeFromProgram(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.removeFromProgram(voterDtoRequest);
+        return DataBase.removeFromProgram(voterDtoRequest);
     }
 }

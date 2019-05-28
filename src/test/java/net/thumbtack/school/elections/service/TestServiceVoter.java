@@ -29,7 +29,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse1 =
                 gson.fromJson(rigister1, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.OK.getErrorString(), registerVoterDtoResponse1.getError());
-        assertEquals(1, Server.dataBase.getVoters().size());
+        assertEquals(1, DataBase.getVoters().size());
         //Нет фамилии
         Voter voter2 = new Voter("Alexander", "", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -39,7 +39,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse2 =
                 gson.fromJson(rigister2, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.DATA.getErrorString(), registerVoterDtoResponse2.getError());
-        assertEquals(1, Server.dataBase.getVoters().size());
+        assertEquals(1, DataBase.getVoters().size());
         //Есть все поля
         Voter voter3 = new Voter("Alexander", "Pupkin", "Maksimovich",
                 "Zarubina", "9", "10",
@@ -49,7 +49,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse3 =
                 gson.fromJson(rigister3, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.OK.getErrorString(), registerVoterDtoResponse3.getError());
-        assertEquals(2, Server.dataBase.getVoters().size());
+        assertEquals(2, DataBase.getVoters().size());
         //Нет отчества, это допустимо
         Voter voter4 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -59,7 +59,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse4 =
                 gson.fromJson(rigister4, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.OK.getErrorString(), registerVoterDtoResponse4.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
         //Нет номера дома
         Voter voter5 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", null, "10",
@@ -69,7 +69,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse5 =
                 gson.fromJson(rigister5, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.DATA.getErrorString(), registerVoterDtoResponse5.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
         //Дубликат избирателя
         Voter voter6 = new Voter("Alexander", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -79,7 +79,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse6 =
                 gson.fromJson(rigister6, RegisterVoterDtoResponse.class);
         assertEquals(ErroDataBase.DUPLICATE_VOTER.getErrorString(), registerVoterDtoResponse6.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
         //Дубликат логина
         Voter voter7 = new Voter("Vasya", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -89,7 +89,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse7 =
                 gson.fromJson(rigister7, RegisterVoterDtoResponse.class);
         assertEquals(ErroDataBase.DUPLICATE_LOGIN.getErrorString(), registerVoterDtoResponse7.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
         //Короткий логин
         Voter voter8 = new Voter("Petya", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -99,7 +99,7 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse8 =
                 gson.fromJson(rigister8, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.LOGIN_LENGTH.getErrorString(), registerVoterDtoResponse8.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
         //Короткий пароль
         Voter voter9 = new Voter("Petya", "Pupkin", "",
                 "Zarubina", "9", "10",
@@ -109,12 +109,12 @@ public class TestServiceVoter {
         RegisterVoterDtoResponse registerVoterDtoResponse9 =
                 gson.fromJson(rigister9, RegisterVoterDtoResponse.class);
         assertEquals(ErrorServiceVoter.PASSWORD_LENGTH.getErrorString(), registerVoterDtoResponse9.getError());
-        assertEquals(3, Server.dataBase.getVoters().size());
+        assertEquals(3, DataBase.getVoters().size());
     }
 
     @Test
     public void logoutAndRestoreVoter(){
-        Server.dataBase.clear();
+        DataBase.clear();
         Server.startElections = false;
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",

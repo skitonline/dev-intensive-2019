@@ -8,16 +8,16 @@ import net.thumbtack.school.elections.server.Server;
 public class ProposalsDaoImpl implements ProposalsDao {
     @Override
     public ErroDataBase addProposal(VoterDtoRequest addProposalDtoRequest) {
-        return Server.dataBase.addProposal(addProposalDtoRequest);
+        return DataBase.addProposal(addProposalDtoRequest);
     }
 
     @Override
     public ErroDataBase addProposalRating(VoterDtoRequest addProposalRatingDtoRequest) {
-        return Server.dataBase.addProposalRating(addProposalRatingDtoRequest);
+        return DataBase.addProposalRating(addProposalRatingDtoRequest);
     }
 
     @Override
     public ErroDataBase removeProposalRating(VoterDtoRequest removeProposalRatingDtoRequest) {
-        return Server.dataBase.removeProposalRating(removeProposalRatingDtoRequest);
+        return DataBase.removeProposalRating(removeProposalRatingDtoRequest);
     }
 }

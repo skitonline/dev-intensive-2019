@@ -62,7 +62,7 @@ public class VoterDtoRequest extends Voter {
         if (Server.startElections)
             return ErrorServiceCandidate.ELECTIONS_START;
         if (realToken()){
-            for (Voter voter : Server.dataBase.getVoters()){
+            for (Voter voter : DataBase.getVoters()){
                 if (getTokenActionCandidate().equals(voter.getToken()))
                     return ErrorServiceCandidate.OK;
             }
@@ -115,7 +115,7 @@ public class VoterDtoRequest extends Voter {
             for (Voter voter : DataBase.getVoters())
                 if (getToken().equals(voter.getToken()) && !isCandidate())
                     return ErrorServiceProgram.NOT_CANDIDATE;
-            if (Server.dataBase.getPropsals().get(getProposal()) == null)
+            if (DataBase.getPropsals().get(getProposal()) == null)
                 return ErrorServiceProgram.PORPOSAL_NOT_FOUND;
             return ErrorServiceProgram.OK;
         }
@@ -134,7 +134,7 @@ public class VoterDtoRequest extends Voter {
         if (realToken()){
             if (getToken().equals(getTokenActionCandidate()))
                 return ErrorServiceElections.VOTE_YOURSELF;
-            if (DataBase.getElection().keySet().contains(getTokenActionCandidate()))
+            if (DataBase.getCandidates().keySet().contains(getTokenActionCandidate()))
                 return ErrorServiceElections.OK;
             return ErrorServiceElections.CANDIDATE_NOT_FOUND;
         }

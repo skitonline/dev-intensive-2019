@@ -8,6 +8,6 @@ import net.thumbtack.school.elections.server.Server;
 public class ElectionsDaoImpl implements ElectionsDao {
     @Override
     public ErroDataBase vote(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.vote(voterDtoRequest);
+        return DataBase.vote(voterDtoRequest);
     }
 }

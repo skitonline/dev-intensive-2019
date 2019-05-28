@@ -8,16 +8,16 @@ import net.thumbtack.school.elections.server.Server;
 public class CandidateDaoImpl implements CandidateDao {
     @Override
     public ErroDataBase addCandidate(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.addCandidate(voterDtoRequest);
+        return DataBase.addCandidate(voterDtoRequest);
     }
 
     @Override
     public ErroDataBase acceptAddCandidate(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.acceptAddCandidate(voterDtoRequest);
+        return DataBase.acceptAddCandidate(voterDtoRequest);
     }
 
     @Override
     public ErroDataBase deleteCandidate(VoterDtoRequest voterDtoRequest) {
-        return Server.dataBase.deleteCandidate(voterDtoRequest);
+        return DataBase.deleteCandidate(voterDtoRequest);
     }
 }

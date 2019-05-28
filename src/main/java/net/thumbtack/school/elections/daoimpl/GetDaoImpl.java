@@ -10,16 +10,16 @@ import net.thumbtack.school.elections.server.Server;
 public class GetDaoImpl implements GetDao {
     @Override
     public GetCandidatesDtoResponse getCandidates(GetDtoRequest getDtoRequest) {
-        return Server.dataBase.getCandidates(getDtoRequest);
+        return DataBase.getCandidates(getDtoRequest);
     }
 
     @Override
     public GetProposalsRatingDtoResponse getProposalsRating(GetDtoRequest getDtoRequest) {
-        return Server.dataBase.getProposalsRating(getDtoRequest);
+        return DataBase.getProposalsRating(getDtoRequest);
     }
 
     @Override
     public GetProposalsVoterDtoResponse getProposalsVoter(GetDtoRequest getDtoRequest) {
-        return Server.dataBase.getProposalsVoter(getDtoRequest);
+        return DataBase.getProposalsVoter(getDtoRequest);
     }
 }

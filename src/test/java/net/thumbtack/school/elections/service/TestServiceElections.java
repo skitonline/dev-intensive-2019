@@ -38,18 +38,18 @@ public class TestServiceElections {
         assertEquals(ErrorServiceElections.NOT_START.getErrorString(), voteDtoResponse1.getError());
         //голосует против всех, поле кандидата = null
         server.startElections();
-        assertEquals(0, (int)DataBase.getElection().get(null));
+        assertEquals(0, (int)DataBase.getCandidates().get(null));
         String vote2 = server.vote(stringVoter1);
         VoteDtoResponse voteDtoResponse2 = gson.fromJson(vote2, VoteDtoResponse.class);
         assertEquals(ErrorServiceElections.OK.getErrorString(), voteDtoResponse2.getError());
-        assertEquals(1, (int)DataBase.getElection().get(null));
+        assertEquals(1, (int)DataBase.getCandidates().get(null));
         //повторно пытается голосовать против всех
         voter1 = DataBase.getVoters().get(0);
         stringVoter1 = gson.toJson(voter1);
         String vote3 = server.vote(stringVoter1);
         VoteDtoResponse voteDtoResponse3 = gson.fromJson(vote3, VoteDtoResponse.class);
         assertEquals(ErrorServiceElections.VOTED.getErrorString(), voteDtoResponse3.getError());
-        assertEquals(1, (int)DataBase.getElection().get(null));
+        assertEquals(1, (int)DataBase.getCandidates().get(null));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class TestServiceElections {
         map.put("token 2", 6);
         map.put(null, 0);
         assertEquals("Выборы не состоялись", server.resultElections());
-        DataBase.setElection(map);
+        DataBase.setCandidates(map);
         assertEquals("token 2", server.resultElections());
     }
 }

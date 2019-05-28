@@ -13,17 +13,15 @@ import net.thumbtack.school.elections.roles.VoterInformation;
 import java.util.*;
 
 public class DataBase {
-    private static DataBase instance;
-
-    public static DataBase getInstance() {
-        return instance;
-    }
-
-    private DataBase(){}
-
-    static private List<Voter> voters = new ArrayList<>();
+    static private List<Voter> voters;
     static private Map<String, Map<String,Integer>> propsals;
-    static private Map<String, Integer> election = new HashMap<>();
+    static private Map<String, Integer> candidates;
+
+    static {
+        voters = new ArrayList<>();
+        propsals = new HashMap<>();
+        candidates = new HashMap<>();
+    }
 
     public static List<Voter> getVoters() {
         return voters;
@@ -37,17 +35,22 @@ public class DataBase {
         DataBase.propsals = propsals;
     }
 
-    public static Map<String, Integer> getElection() {
-        return election;
+    public static Map<String, Integer> getCandidates() {
+        return candidates;
     }
 
-    public static void setElection(Map<String, Integer> election) {
-        DataBase.election = election;
+    public static void setCandidates(Map<String, Integer> candidates) {
+        DataBase.candidates = candidates;
+    }
+
+    public static void setVoters(List<Voter> voters) {
+        DataBase.voters = voters;
     }
 
     public static void clear() {
-        voters.clear();
+        voters = new ArrayList<>();
         propsals = new HashMap<>();
+        candidates = new HashMap<>();
     }
 
     static public ErroDataBase insertVoter(VoterDtoRequest voterDtoRequest) {
@@ -240,25 +243,25 @@ public class DataBase {
     }
 
     static public void startElections() {
-        election = new HashMap<>();
+        candidates = new HashMap<>();
         for (Voter voter : voters)
             if (voter.isCandidate() && voter.getProgram() != null && !voter.getProgram().isEmpty())
-                election.put(voter.getToken(), 0);
-        election.put(null, 0);
+                candidates.put(voter.getToken(), 0);
+        candidates.put(null, 0);
     }
 
     static public ErroDataBase vote(VoterDtoRequest voterDtoRequest) {
         for (Voter voter : voters)
             if (voterDtoRequest.getToken().equals(voter.getToken()))
                 voter.setVoted(true);
-        int rating = election.get(voterDtoRequest.getTokenActionCandidate());
-        election.put(voterDtoRequest.getTokenActionCandidate(), rating + 1);
+        int rating = candidates.get(voterDtoRequest.getTokenActionCandidate());
+        candidates.put(voterDtoRequest.getTokenActionCandidate(), rating + 1);
         return ErroDataBase.OK;
     }
 
     static public String resultElections() {
         String result = null; int maxValue = 0;
-        for(Map.Entry<String, Integer> el : election.entrySet())
+        for(Map.Entry<String, Integer> el : candidates.entrySet())
             if (el.getValue() > maxValue){
                 result = el.getKey();
                 maxValue = el.getValue();
