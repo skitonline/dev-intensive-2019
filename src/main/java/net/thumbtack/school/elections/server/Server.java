@@ -4,7 +4,6 @@ import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.service.*;
 
 public class Server {
-    static public boolean startElections = false;
     private ServiceServer serviceServer = new ServiceServer();
     private ServiceVoter serviceVoter = new ServiceVoter();
     private ServiceCandidate serviceCandidate = new ServiceCandidate();
@@ -78,8 +77,8 @@ public class Server {
     }
 
     public void startElections(){
-        if (!startElections) {
-            startElections = true;
+        if (!DataBase.startElections) {
+            DataBase.startElections = true;
             DataBase.startElections();
         }
     }

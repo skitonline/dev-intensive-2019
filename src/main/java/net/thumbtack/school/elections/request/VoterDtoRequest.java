@@ -26,7 +26,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceVoter validationRegister(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceVoter.ELECTIONS_START;
         if (getName() == null || getName().isEmpty() ||
                 getSurname() == null || getSurname().isEmpty() ||
@@ -41,7 +41,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceVoter validationLogout(){
-        if (Server.startElections)
+        if (DataBase.startElections)
            return ErrorServiceVoter.ELECTIONS_START;
         if (getLogin() == null || getLogin().length() < 3)
             return ErrorServiceVoter.LOGIN_LENGTH;
@@ -59,7 +59,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceCandidate validationAddCantidate(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceCandidate.ELECTIONS_START;
         if (realToken()){
             for (Voter voter : DataBase.getVoters()){
@@ -72,7 +72,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceCandidate validationAcceptAddCandidate(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceCandidate.ELECTIONS_START;
         if (realToken())
             return ErrorServiceCandidate.OK;
@@ -84,7 +84,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceProposals validationAddProposal(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceProposals.ELECTIONS_START;
         if (realToken())
             return ErrorServiceProposals.OK;
@@ -92,7 +92,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceProposals validationAddProposalRating(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceProposals.ELECTIONS_START;
         if (realToken()) {
             if (getRatingProposal() < 1 || getRatingProposal() > 5)
@@ -109,7 +109,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceProgram validationAddInProgram(){
-        if (Server.startElections)
+        if (DataBase.startElections)
             return ErrorServiceProgram.ELECTIONS_START;
         if (realToken()) {
             for (Voter voter : DataBase.getVoters())
@@ -127,7 +127,7 @@ public class VoterDtoRequest extends Voter {
     }
 
     public ErrorServiceElections validationVote(){
-        if (!Server.startElections)
+        if (!DataBase.startElections)
             return ErrorServiceElections.NOT_START;
         if (isVoted())
             return ErrorServiceElections.VOTED;

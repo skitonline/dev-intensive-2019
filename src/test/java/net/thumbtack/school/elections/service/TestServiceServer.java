@@ -19,7 +19,7 @@ public class TestServiceServer {
     @Test
     public void stopStartServer() throws IOException {
         DataBase.clear();
-        Server.startElections = false;
+        DataBase.startElections = false;
         server.stopServer("stop");
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",

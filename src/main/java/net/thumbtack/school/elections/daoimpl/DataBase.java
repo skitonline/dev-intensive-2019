@@ -16,6 +16,7 @@ public class DataBase {
     static private List<Voter> voters;
     static private Map<String, Map<String,Integer>> propsals;
     static private Map<String, Integer> candidates;
+    static public boolean startElections = false;
 
     static {
         voters = new ArrayList<>();

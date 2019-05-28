@@ -21,7 +21,7 @@ public class TestServiceGet {
     @Test
     public void getCandidates() {
         DataBase.clear();
-        Server.startElections = false;
+        DataBase.startElections = false;
         //регаем 1 ползьователя
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",

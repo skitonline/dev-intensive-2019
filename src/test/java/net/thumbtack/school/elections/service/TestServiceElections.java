@@ -21,7 +21,7 @@ public class TestServiceElections {
     @Test
     public void vote() {
         DataBase.clear();
-        Server.startElections = false;
+        DataBase.startElections = false;
         Voter voter1 = new Voter("Alexander", "Evseev", "Maksimovich",
                 "Zarubina", "9", "10",
                 "skitonline1", "123456");
