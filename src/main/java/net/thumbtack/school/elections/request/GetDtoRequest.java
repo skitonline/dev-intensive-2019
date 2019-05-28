@@ -26,4 +26,8 @@ public class GetDtoRequest {
             return ErrorServiceGet.OK;
         return ErrorServiceGet.VOTER_NOT_FOUND;
     }
+
+    public ErrorServiceGet validationGetProposalsRating(){
+        return validationGetCandidates();
+    }
 }

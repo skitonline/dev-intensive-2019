@@ -70,4 +70,8 @@ public class Server {
     public String getCandidates(String requestJsonString){
         return serviceGet.getCandidates(requestJsonString);
     }
+
+    public String getProposalsRating(String requestJsonString){
+        return serviceGet.getProposalsRating(requestJsonString);
+    }
 }

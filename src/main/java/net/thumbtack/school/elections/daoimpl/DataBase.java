@@ -1,9 +1,11 @@
 package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
+import net.thumbtack.school.elections.error.ErrorServiceGet;
 import net.thumbtack.school.elections.request.GetDtoRequest;
 import net.thumbtack.school.elections.request.VoterDtoRequest;
 import net.thumbtack.school.elections.response.get.GetCandidatesDtoResponse;
+import net.thumbtack.school.elections.response.get.GetProposalsRatingDtoResponse;
 import net.thumbtack.school.elections.roles.Voter;
 import net.thumbtack.school.elections.roles.VoterInformation;
 
@@ -27,6 +29,10 @@ public class DataBase {
 
     public static Map<String, Map<String, Integer>> getPropsals() {
         return propsals;
+    }
+
+    public static void setPropsals(Map<String, Map<String, Integer>> propsals) {
+        DataBase.propsals = propsals;
     }
 
     public static void clear() {
@@ -190,6 +196,28 @@ public class DataBase {
                 candidate.setProgram(voter.getProgram().keySet());
                 getCandidatesDtoResponse.getCantidates().add(candidate);
             }
+        getCandidatesDtoResponse.setError(ErrorServiceGet.OK.getErrorString());
         return getCandidatesDtoResponse;
+    }
+
+    static public GetProposalsRatingDtoResponse getProposalsRating(GetDtoRequest getDtoRequest) {
+        GetProposalsRatingDtoResponse getProposalsRatingDtoResponse =
+                new GetProposalsRatingDtoResponse();
+        for(Map.Entry<String, Map<String, Integer>> el : propsals.entrySet()){
+            Integer[] rating = (Integer[]) el.getValue().values().toArray();
+            int sum = 0;
+            for (int i = 0; i < rating.length; i++)
+                sum += rating[i];
+            getProposalsRatingDtoResponse.getRatings().put(el.getKey(), sum / (double)rating.length);
+        }
+        List list = new ArrayList(getProposalsRatingDtoResponse.getRatings().entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
+                return a.getValue() - b.getValue();
+            }
+        });
+        getProposalsRatingDtoResponse.setError(ErrorServiceGet.OK.getErrorString());
+        return getProposalsRatingDtoResponse;
     }
 }
