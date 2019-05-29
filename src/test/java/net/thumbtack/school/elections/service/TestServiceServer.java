@@ -31,7 +31,6 @@ public class TestServiceServer {
         voter1.setToken(DataBase.getVoters().get(0).getToken());
         stringVoter1 = gson.toJson(voter1);
         server.addProposal(stringVoter1);
-        server.startElections();
         server.stopServer("stop1");
         server.startServer("stop1");
         server.stopServer("stop2");

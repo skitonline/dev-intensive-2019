@@ -1,5 +1,6 @@
 package net.thumbtack.school.elections.request;
 
+import net.thumbtack.school.elections.dao.ElectionsDao;
 import net.thumbtack.school.elections.daoimpl.DataBase;
 import net.thumbtack.school.elections.error.*;
 import net.thumbtack.school.elections.roles.Voter;
@@ -126,9 +127,21 @@ public class VoterDtoRequest extends Voter {
         return validationAddInProgram();
     }
 
+    public ErrorServiceGet validationGetCandidates() {
+        if (realToken())
+            return ErrorServiceGet.OK;
+        return ErrorServiceGet.VOTER_NOT_FOUND;
+    }
+
+    public ErrorServiceGet validationGetProposalsRating(){
+        return validationGetCandidates();
+    }
+
+    public ErrorServiceGet validationGetProposalsCandidate() {
+        return validationGetCandidates();
+    }
+
     public ErrorServiceElections validationVote(){
-        if (!DataBase.startElections)
-            return ErrorServiceElections.NOT_START;
         if (isVoted())
             return ErrorServiceElections.VOTED;
         if (realToken()){
@@ -139,5 +152,13 @@ public class VoterDtoRequest extends Voter {
             return ErrorServiceElections.CANDIDATE_NOT_FOUND;
         }
         return ErrorServiceElections.VOTER_NOT_FOUND;
+    }
+
+    public ErrorServiceElections validationResultElections() {
+        if (!realToken())
+            return ErrorServiceElections.VOTER_NOT_FOUND;
+        if (!DataBase.startElections)
+            return ErrorServiceElections.NOT_START;
+        return ErrorServiceElections.OK;
     }
 }

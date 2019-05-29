@@ -2,8 +2,9 @@ package net.thumbtack.school.elections.daoimpl;
 
 import net.thumbtack.school.elections.error.ErroDataBase;
 import net.thumbtack.school.elections.error.ErrorServiceGet;
-import net.thumbtack.school.elections.request.GetDtoRequest;
 import net.thumbtack.school.elections.request.VoterDtoRequest;
+import net.thumbtack.school.elections.response.elections.ResultElectionsDtoResponse;
+import net.thumbtack.school.elections.response.elections.VoteDtoResponse;
 import net.thumbtack.school.elections.response.get.GetCandidatesDtoResponse;
 import net.thumbtack.school.elections.response.get.GetProposalsRatingDtoResponse;
 import net.thumbtack.school.elections.response.get.GetProposalsVoterDtoResponse;
@@ -13,16 +14,10 @@ import net.thumbtack.school.elections.roles.VoterInformation;
 import java.util.*;
 
 public class DataBase {
-    static private List<Voter> voters;
-    static private Map<String, Map<String,Integer>> propsals;
+    static private List<Voter> voters = new ArrayList<>();
+    static private Map<String, Map<String,Integer>> propsals = new HashMap<>();
     static private Map<String, Integer> candidates;
     static public boolean startElections = false;
-
-    static {
-        voters = new ArrayList<>();
-        propsals = new HashMap<>();
-        candidates = new HashMap<>();
-    }
 
     public static List<Voter> getVoters() {
         return voters;
@@ -200,7 +195,7 @@ public class DataBase {
         return ErroDataBase.OK;
     }
 
-    static public GetCandidatesDtoResponse getCandidates(GetDtoRequest getDtoRequest) {
+    static public GetCandidatesDtoResponse getCandidates(VoterDtoRequest getDtoRequest) {
         GetCandidatesDtoResponse getCandidatesDtoResponse = new GetCandidatesDtoResponse();
         for (Voter voter : voters)
             if (voter.isCandidate()) {
@@ -214,7 +209,7 @@ public class DataBase {
         return getCandidatesDtoResponse;
     }
 
-    static public GetProposalsRatingDtoResponse getProposalsRating(GetDtoRequest getDtoRequest) {
+    static public GetProposalsRatingDtoResponse getProposalsRating(VoterDtoRequest getDtoRequest) {
         GetProposalsRatingDtoResponse getProposalsRatingDtoResponse =
                 new GetProposalsRatingDtoResponse();
         for(Map.Entry<String, Map<String, Integer>> el : propsals.entrySet()){
@@ -229,7 +224,7 @@ public class DataBase {
         return getProposalsRatingDtoResponse;
     }
 
-    static public GetProposalsVoterDtoResponse getProposalsVoter(GetDtoRequest getDtoRequest) {
+    static public GetProposalsVoterDtoResponse getProposalsVoter(VoterDtoRequest getDtoRequest) {
         GetProposalsVoterDtoResponse getProposalsVoterDtoResponse =
                 new GetProposalsVoterDtoResponse();
         for (Voter voter : voters)
@@ -244,31 +239,37 @@ public class DataBase {
     }
 
     static public void startElections() {
-        candidates = new HashMap<>();
-        for (Voter voter : voters)
-            if (voter.isCandidate() && voter.getProgram() != null && !voter.getProgram().isEmpty())
-                candidates.put(voter.getToken(), 0);
-        candidates.put(null, 0);
+        if (!startElections) {
+            candidates = new HashMap<>();
+            startElections = true;
+            for (Voter voter : voters)
+                if (voter.isCandidate() && voter.getProgram() != null && !voter.getProgram().isEmpty())
+                    candidates.put(voter.getToken(), 0);
+            candidates.put(null, 0);
+        }
     }
 
-    static public ErroDataBase vote(VoterDtoRequest voterDtoRequest) {
+    static public VoteDtoResponse vote(VoterDtoRequest voterDtoRequest) {
         for (Voter voter : voters)
             if (voterDtoRequest.getToken().equals(voter.getToken()))
                 voter.setVoted(true);
         int rating = candidates.get(voterDtoRequest.getTokenActionCandidate());
         candidates.put(voterDtoRequest.getTokenActionCandidate(), rating + 1);
-        return ErroDataBase.OK;
+        VoteDtoResponse result = new VoteDtoResponse();
+        result.setError(ErroDataBase.OK.getErrorString());
+        return result;
     }
 
-    static public String resultElections() {
-        String result = null; int maxValue = 0;
+    static public ResultElectionsDtoResponse resultElections(VoterDtoRequest voterDtoRequest) {
+        ResultElectionsDtoResponse result = new ResultElectionsDtoResponse();
+        int maxValue = 0;
         for(Map.Entry<String, Integer> el : candidates.entrySet())
             if (el.getValue() > maxValue){
-                result = el.getKey();
+                result.setWinner(el.getKey());
                 maxValue = el.getValue();
             }
         if (result == null)
-            result = "Выборы не состоялись";
+            result.setWinner("Выборы не состоялись");
         return result;
     }
 }

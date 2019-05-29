@@ -76,18 +76,11 @@ public class Server {
         return serviceGet.getProposalsVoter(requestJsonString);
     }
 
-    public void startElections(){
-        if (!DataBase.startElections) {
-            DataBase.startElections = true;
-            DataBase.startElections();
-        }
-    }
-
     public String vote(String requestJsonString){
         return serviceElections.vote(requestJsonString);
     }
 
-    public String resultElections(){
-        return DataBase.resultElections();
+    public String resultElections(String requestJsonString){
+        return serviceElections.resultElections(requestJsonString);
     }
 }
