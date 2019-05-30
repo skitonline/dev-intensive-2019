@@ -1,0 +1,34 @@
+DROP DATABASE IF EXISTS ttschool;
+CREATE DATABASE `ttschool`;
+USE `ttschool`;
+
+CREATE TABLE trainee (
+    id INT NOT NULL AUTO_INCREMENT,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    rating INT,
+    PRIMARY KEY (id)
+)
+ENGINE=INNODB DEFAULT CHARSET=utf8;
+CREATE TABLE subject_table (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50),
+    PRIMARY KEY (id)
+)
+ENGINE=INNODB DEFAULT CHARSET=utf8;
+CREATE TABLE school (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50),
+    year_field INT,
+    PRIMARY KEY (id)
+)
+ENGINE=INNODB DEFAULT CHARSET=utf8;
+CREATE TABLE group_table (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50),
+    room VARCHAR(50),
+    school_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (school_id)  REFERENCES school (id) ON DELETE CASCADE
+)
+ENGINE=INNODB DEFAULT CHARSET=utf8;
