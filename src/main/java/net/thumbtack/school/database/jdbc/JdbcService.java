@@ -16,6 +16,7 @@ public class JdbcService {
         PreparedStatement preparedStmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         preparedStmt.setNull(1, java.sql.Types.INTEGER);
         preparedStmt.setString (2, trainee.getFirstName());
+        int a = 1;
         preparedStmt.setString   (3, trainee.getLastName());
         preparedStmt.setInt    (4, trainee.getRating());
         preparedStmt.executeUpdate();
